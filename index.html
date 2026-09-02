@@ -302,8 +302,12 @@
   const SUPABASE_URL = "https://gbxxgexelqwmmoijacmj.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_5-P7UXebrIFpwVF14mQk9A_aXV1mne2";
   let supabaseClient = null;
-  if (SUPABASE_URL !== "TU_SUPABASE_URL" && SUPABASE_ANON_KEY !== "TU_SUPABASE_ANON_KEY") {
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  try {
+    if (SUPABASE_URL !== "TU_SUPABASE_URL" && SUPABASE_ANON_KEY !== "TU_SUPABASE_ANON_KEY" && window.supabase) {
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+  } catch (e) {
+    console.error('No se pudo conectar Supabase:', e);
   }
 </script>
 </head>
@@ -348,6 +352,7 @@
       <a href="#marketplace">Marketplace</a>
       <a href="#precios">Precios</a>
       <a href="#faq">Preguntas</a>
+      <a href="cuenta.html">Mi cuenta</a>
     </div>
     <a class="cta-small" href="#registro">Reservar mi lugar</a>
   </div>
@@ -729,8 +734,11 @@
     const correo = document.getElementById('correo').value.trim();
     const plan = document.getElementById('planHidden').value || null;
 
+    const { data: sessionData } = await supabaseClient.auth.getSession();
+    const userId = sessionData.session ? sessionData.session.user.id : null;
+
     const { error } = await supabaseClient.from('reservas').insert([
-      { nombre, correo, plan, estado: 'pendiente' }
+      { nombre, correo, plan, estado: 'pendiente', user_id: userId }
     ]);
 
     if(!error){
