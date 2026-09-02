@@ -268,6 +268,44 @@
   3. Reemplaza TUCODIGO abajo por ese código y descomenta la línea del script
 -->
 <script data-goatcounter="https://jimmy-carlosama.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+<!--
+  BASE DE DATOS REAL (Supabase, gratis, sin tarjeta) — reservas con estado pendiente/aprobada/rechazada
+  1. Entra a https://supabase.com → "Start your project" → crea cuenta gratis
+  2. Crea un proyecto nuevo (elige una contraseña de base de datos y guárdala)
+  3. En el menú izquierdo entra a "SQL Editor" → "New query" y pega esto, luego dale "Run":
+
+     create table reservas (
+       id uuid primary key default gen_random_uuid(),
+       nombre text not null,
+       correo text not null,
+       plan text,
+       estado text not null default 'pendiente',
+       created_at timestamptz not null default now()
+     );
+     alter table reservas enable row level security;
+     create policy "cualquiera puede reservar" on reservas
+       for insert to anon with check (true);
+     create policy "solo admins ven las reservas" on reservas
+       for select to authenticated using (true);
+     create policy "solo admins aprueban o rechazan" on reservas
+       for update to authenticated using (true);
+
+  4. Ve a "Authentication" → "Users" → "Add user" y crea tu usuario admin (tu correo + una contraseña) — con esto entras al panel admin.html
+  5. Ve a "Project Settings" → "API" y copia:
+     - Project URL     → reemplaza TU_SUPABASE_URL abajo
+     - anon public key → reemplaza TU_SUPABASE_ANON_KEY abajo
+     (haz el mismo reemplazo en admin.html)
+-->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+  const SUPABASE_URL = "TU_SUPABASE_URL";
+  const SUPABASE_ANON_KEY = "TU_SUPABASE_ANON_KEY";
+  let supabaseClient = null;
+  if (SUPABASE_URL !== "TU_SUPABASE_URL" && SUPABASE_ANON_KEY !== "TU_SUPABASE_ANON_KEY") {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+</script>
 </head>
 <body>
 
@@ -342,8 +380,8 @@
             <button type="submit">Quiero mi lugar</button>
           </div>
         </form>
-        <p class="form-note">Te escribimos por correo para coordinar tu primera visita (proceso manual — Método Mago de Oz).</p>
-        <div class="form-success" id="successBox"><svg class="icon" style="color:var(--teal);margin-right:4px;"><use href="#i-check-circle"/></svg> ¡Listo! Te contactaremos por correo en 24h para coordinar tu espacio y presentarte a 2-3 colaboradores afines a tu proyecto.</div>
+        <p class="form-note">Tu reserva queda <strong>pendiente de aprobación</strong> — el equipo la revisa y te escribe en 24h (proceso manual — Método Mago de Oz).</p>
+        <div class="form-success" id="successBox"><svg class="icon" style="color:var(--teal);margin-right:4px;"><use href="#i-check-circle"/></svg> ¡Listo! Tu solicitud quedó registrada como <strong>pendiente</strong>. Te contactaremos por correo en 24h para coordinar tu espacio y presentarte a 2-3 colaboradores afines a tu proyecto.</div>
       </div>
     </div>
 
@@ -601,7 +639,7 @@
       <div class="metric"><div class="value" id="mTasa">0%</div><div class="lbl">Tasa de conversión</div></div>
       <div class="metric"><div class="value">10</div><div class="lbl">Meta mínima de validación</div></div>
     </div>
-    <p class="metric-note">* Este panel es solo una demo visual mientras pruebas el sitio tú mismo (se resetea al recargar). Los datos reales de visitantes están en tu panel de <strong>GoatCounter</strong>, y los registros/feedback reales llegan a tu correo y panel de <strong>Formspree</strong> — de ahí toman los números para su tabla del MVP (slide 13) y su Análisis de Decisiones (slide 18).</p>
+    <p class="metric-note">* Este panel es solo una demo visual mientras pruebas el sitio tú mismo (se resetea al recargar). Las reservas reales, con su estado pendiente/aprobada/rechazada, quedan guardadas en tu base de datos de <strong>Supabase</strong> — entra al <a href="admin.html" style="color:var(--teal-deep);font-weight:600;">panel de administrador</a> para verlas y gestionarlas. El feedback de las 4 preguntas de validación llega a tu correo y panel de <strong>Formspree</strong>. De ahí toman los números para su tabla del MVP (slide 13) y su Análisis de Decisiones (slide 18).</p>
   </div>
 </section>
 
@@ -618,7 +656,7 @@
   </div>
 </section>
 
-<footer>Prototipo de validación — CoWork+ · Proyecto académico ACA 2026 · No es un producto real todavía.</footer>
+<footer>Prototipo de validación — CoWork+ · Proyecto académico ACA 2026 · No es un producto real todavía. · <a href="admin.html" style="color:inherit;text-decoration:underline;">Panel de administrador</a></footer>
 
 <script>
   // ---- metrics (in-memory, no localStorage) ----
@@ -668,14 +706,14 @@
     document.getElementById('planHidden').value = '';
   }
 
-  document.getElementById('signupForm').addEventListener('submit', function(e){
+  document.getElementById('signupForm').addEventListener('submit', async function(e){
     e.preventDefault();
     const form = this;
     const btn = form.querySelector('button');
     const box = document.getElementById('successBox');
 
-    if(form.action.includes('TU_ID_DE_FORMSPREE')){
-      box.innerHTML = '⚠️ Este formulario todavía no está conectado a Formspree. Sigue el paso 2 de las instrucciones en el código para que los registros lleguen a tu correo real.';
+    if(!supabaseClient){
+      box.innerHTML = '⚠️ La base de datos todavía no está conectada. Sigue las instrucciones del bloque "BASE DE DATOS REAL" en el código (busca TU_SUPABASE_URL) para que las reservas se guarden de verdad.';
       box.style.background = 'rgba(200,154,76,0.18)';
       box.style.borderColor = 'rgba(200,154,76,0.5)';
       box.style.display = 'block';
@@ -687,29 +725,29 @@
     btn.disabled = true;
     btn.textContent = 'Enviando...';
 
-    fetch(form.action, {
-      method: 'POST',
-      body: new FormData(form),
-      headers: { 'Accept': 'application/json' }
-    }).then(res => {
-      if(res.ok){
-        memory.registros += 1;
-        renderMetrics();
-        box.innerHTML = '<svg class="icon" style="color:var(--teal);margin-right:4px;"><use href="#i-check-circle"/></svg> ¡Listo! Te contactaremos por correo en 24h para coordinar tu espacio'
-          + (chosenPlan ? ' con el plan <strong>' + chosenPlan.name + '</strong> (' + chosenPlan.price + ')' : '')
-          + ' y presentarte a 2-3 colaboradores afines a tu proyecto.';
-        box.style.display = 'block';
-        btn.textContent = '¡Registrado!';
-      } else {
-        btn.disabled = false;
-        btn.textContent = 'Quiero mi lugar';
-        alert('Hubo un problema enviando el formulario. Intenta de nuevo.');
-      }
-    }).catch(() => {
+    const nombre = document.getElementById('nombre').value.trim();
+    const correo = document.getElementById('correo').value.trim();
+    const plan = document.getElementById('planHidden').value || null;
+
+    const { error } = await supabaseClient.from('reservas').insert([
+      { nombre, correo, plan, estado: 'pendiente' }
+    ]);
+
+    if(!error){
+      memory.registros += 1;
+      renderMetrics();
+      box.style.background = '';
+      box.style.borderColor = '';
+      box.innerHTML = '<svg class="icon" style="color:var(--teal);margin-right:4px;"><use href="#i-check-circle"/></svg> ¡Listo! Tu solicitud quedó registrada como <strong>pendiente</strong>'
+        + (chosenPlan ? ' con el plan <strong>' + chosenPlan.name + '</strong> (' + chosenPlan.price + ')' : '')
+        + '. El equipo la revisará y te escribirá en 24h.';
+      box.style.display = 'block';
+      btn.textContent = '¡Registrado!';
+    } else {
       btn.disabled = false;
       btn.textContent = 'Quiero mi lugar';
-      alert('Hubo un problema de conexión. Intenta de nuevo.');
-    });
+      alert('Hubo un problema guardando tu reserva: ' + error.message);
+    }
   });
 
   // ---- feedback form ----
