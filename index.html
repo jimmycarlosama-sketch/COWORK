@@ -51,7 +51,22 @@
   .navlinks a:hover{opacity:1;}
   nav .cta-small{background:var(--navy);color:var(--white);padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none;transition:transform .15s;}
   nav .cta-small:hover{transform:translateY(-1px);}
-  @media (max-width:900px){ .navlinks{display:none;} }
+  .hamburger{display:none;background:none;border:none;padding:8px;cursor:pointer;color:var(--ink);}
+  .hamburger svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;}
+  @media (max-width:900px){
+    .navlinks{
+      display:none;
+      position:absolute; top:100%; left:0; right:0;
+      background:var(--paper); border-bottom:1px solid var(--line);
+      flex-direction:column; gap:0; padding:8px 28px 14px;
+      box-shadow:0 12px 24px rgba(11,42,71,0.08);
+    }
+    .navlinks.open{display:flex;}
+    .navlinks a{padding:12px 0; border-bottom:1px solid var(--line); opacity:1;}
+    .navlinks a:last-child{border-bottom:none;}
+    .hamburger{display:inline-flex;}
+    nav .wrap{position:relative;}
+  }
 
   /* HERO */
   .hero{background:linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 55%, var(--teal-deep) 135%);color:var(--white);padding:88px 0 110px;position:relative;overflow:hidden;}
@@ -346,7 +361,7 @@
       </svg>
       CoWork<span>+</span>
     </div>
-    <div class="navlinks">
+    <div class="navlinks" id="navLinks">
       <a href="#beneficios">Beneficios</a>
       <a href="#ubicaciones">Ubicaciones</a>
       <a href="#marketplace">Marketplace</a>
@@ -355,6 +370,9 @@
       <a href="cuenta.html">Mi cuenta</a>
     </div>
     <a class="cta-small" href="#registro">Reservar mi lugar</a>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menú">
+      <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
   </div>
 </nav>
 
@@ -674,6 +692,18 @@
   }
   memory.visitas += 1;
   renderMetrics();
+
+  // ---- mobile menu ----
+  const navLinks = document.getElementById('navLinks');
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  hamburgerBtn.addEventListener('click', function(){
+    navLinks.classList.toggle('open');
+  });
+  navLinks.addEventListener('click', function(e){
+    if(e.target.tagName === 'A'){
+      navLinks.classList.remove('open');
+    }
+  });
 
   // ---- plan selection ----
   let chosenPlan = null;
