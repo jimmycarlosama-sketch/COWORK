@@ -212,8 +212,16 @@
   const SUPABASE_URL = "https://gbxxgexelqwmmoijacmj.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_5-P7UXebrIFpwVF14mQk9A_aXV1mne2";
 
-  const configured = SUPABASE_URL !== "TU_SUPABASE_URL" && SUPABASE_ANON_KEY !== "TU_SUPABASE_ANON_KEY";
-  const supabaseClient = configured ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+  const configuredIntent = SUPABASE_URL !== "TU_SUPABASE_URL" && SUPABASE_ANON_KEY !== "TU_SUPABASE_ANON_KEY";
+  let supabaseClient = null;
+  try {
+    if (configuredIntent && window.supabase) {
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+  } catch (e) {
+    console.error('No se pudo conectar Supabase:', e);
+  }
+  const configured = !!supabaseClient;
 
   const loginWrap = document.getElementById('loginWrap');
   const dash = document.getElementById('dash');
@@ -242,14 +250,31 @@
 
     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
-    btn.disabled = false;
-    btn.textContent = 'Iniciar sesión';
-
     if(error){
+      btn.disabled = false;
+      btn.textContent = 'Iniciar sesión';
       loginError.textContent = 'No pudimos iniciar sesión: ' + error.message;
       loginError.style.display = 'block';
       return;
     }
+
+    // verifica que sea personal antes de dejarlo entrar
+    const { data: perfil, error: perfilError } = await supabaseClient
+      .from('perfiles')
+      .select('rol')
+      .eq('id', data.user.id)
+      .single();
+
+    btn.disabled = false;
+    btn.textContent = 'Iniciar sesión';
+
+    if(perfilError || !perfil || perfil.rol !== 'personal'){
+      await supabaseClient.auth.signOut();
+      loginError.textContent = 'Esta cuenta no tiene acceso de personal. Si eres cliente, entra desde cuenta.html.';
+      loginError.style.display = 'block';
+      return;
+    }
+
     showDashboard();
   });
 
@@ -355,11 +380,23 @@
   }
   function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
 
-  // si ya hay sesión activa (refrescó la página), entra directo
+  // si ya hay sesión activa (refrescó la página), verifica el rol y entra directo
   (async function checkSession(){
     if(!configured) return;
     const { data } = await supabaseClient.auth.getSession();
-    if(data.session) showDashboard();
+    if(!data.session) return;
+
+    const { data: perfil } = await supabaseClient
+      .from('perfiles')
+      .select('rol')
+      .eq('id', data.session.user.id)
+      .single();
+
+    if(perfil && perfil.rol === 'personal'){
+      showDashboard();
+    } else {
+      await supabaseClient.auth.signOut();
+    }
   })();
 </script>
 
