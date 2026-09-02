@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoWork+ — Mi cuenta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1B26;
+    --navy:#0B2A47;
+    --navy-2:#12395C;
+    --teal:#0C9C8B;
+    --teal-deep:#08655C;
+    --teal-pale:#E4F4F1;
+    --gold:#C89A4C;
+    --gold-deep:#96712F;
+    --paper:#F7F6F2;
+    --line:rgba(14,27,38,0.11);
+    --white:#FFFFFF;
+    --muted:rgba(14,27,38,0.62);
+    --red:#B3423C;
+    --red-pale:#F8E7E5;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Fraunces',serif;margin:0;letter-spacing:-0.01em;}
+  svg.icon{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-0.15em;}
+  a{color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+
+  nav{background:var(--navy);color:var(--white);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;}
+  .logo{font-family:'Fraunces',serif;font-weight:700;font-size:19px;display:flex;align-items:center;gap:9px;}
+  .logo span{color:var(--gold);}
+  .navlinks a{font-size:13.5px;font-weight:500;opacity:.8;text-decoration:none;}
+  .navlinks a:hover{opacity:1;}
+
+  .page{min-height:calc(100vh - 60px);display:flex;align-items:flex-start;justify-content:center;padding:56px 20px;}
+  .card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:38px 36px;max-width:420px;width:100%;box-shadow:0 20px 50px rgba(11,42,71,0.08);}
+  .card .mark{width:44px;height:44px;margin:0 auto 18px;display:block;}
+  .card h1{font-size:22px;font-weight:600;text-align:center;}
+  .card p.sub{text-align:center;font-size:13.5px;color:var(--muted);margin-top:8px;margin-bottom:24px;}
+
+  .tabs{display:flex;background:var(--paper);border-radius:9px;padding:4px;margin-bottom:22px;}
+  .tab{flex:1;text-align:center;padding:9px 0;border-radius:7px;font-size:13.5px;font-weight:600;cursor:pointer;color:var(--muted);}
+  .tab.active{background:var(--white);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,0.08);}
+
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12.5px;font-weight:600;margin-bottom:6px;}
+  .field input{width:100%;padding:11px 13px;border-radius:8px;border:1px solid var(--line);font-size:14px;font-family:'Inter',sans-serif;background:var(--paper);}
+  .field input:focus{outline:none;border-color:var(--teal-deep);}
+
+  .role-row{display:flex;gap:10px;margin-bottom:16px;}
+  .role-opt{flex:1;border:1.5px solid var(--line);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;}
+  .role-opt svg{width:20px;height:20px;display:block;margin:0 auto 6px;color:var(--muted);}
+  .role-opt.selected{border-color:var(--teal-deep);background:var(--teal-pale);color:var(--teal-deep);}
+  .role-opt.selected svg{color:var(--teal-deep);}
+
+  .submit-btn{width:100%;background:var(--navy);color:var(--white);border:none;padding:13px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;}
+  .submit-btn:hover{background:var(--navy-2);}
+  .submit-btn:disabled{opacity:.6;cursor:default;}
+
+  .msg{padding:10px 12px;border-radius:8px;font-size:13px;margin-bottom:14px;display:none;}
+  .msg.error{background:var(--red-pale);color:var(--red);border:1px solid rgba(179,66,60,0.3);}
+  .msg.success{background:var(--teal-pale);color:var(--teal-deep);border:1px solid rgba(8,101,92,0.3);}
+  .setup-warning{background:#F6ECD9;border:1px solid rgba(200,154,76,0.5);color:var(--gold-deep);padding:14px 16px;border-radius:10px;font-size:13px;line-height:1.6;margin-top:20px;}
+
+  .dash-card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:34px 36px;max-width:560px;width:100%;box-shadow:0 20px 50px rgba(11,42,71,0.08);}
+  .dash-top{display:flex;align-items:center;gap:14px;margin-bottom:6px;}
+  .avatar-big{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--navy));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-family:'Fraunces',serif;font-size:18px;flex-shrink:0;}
+  .dash-top h2{font-size:19px;font-weight:600;}
+  .dash-top p{font-size:13px;color:var(--muted);margin-top:2px;}
+  .role-badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;margin-top:6px;}
+  .role-badge.cliente{background:var(--teal-pale);color:var(--teal-deep);}
+  .role-badge.personal{background:#F6ECD9;color:var(--gold-deep);}
+  .logout-btn{margin-left:auto;border:1px solid var(--line);background:var(--white);padding:8px 14px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;flex-shrink:0;}
+  .logout-btn:hover{border-color:var(--red);color:var(--red);}
+
+  .divider{height:1px;background:var(--line);margin:24px 0;}
+
+  .res-item{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px;}
+  .res-item .top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .res-item .plan{font-weight:600;font-size:14.5px;}
+  .badge{display:inline-block;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;}
+  .badge.pendiente{background:#F6ECD9;color:var(--gold-deep);}
+  .badge.aprobada{background:var(--teal-pale);color:var(--teal-deep);}
+  .badge.rechazada{background:var(--red-pale);color:var(--red);}
+  .res-item .date{font-size:12.5px;color:var(--muted);}
+
+  .empty-res{text-align:center;padding:30px 10px;color:var(--muted);font-size:13.5px;}
+  .empty-res a{color:var(--teal-deep);font-weight:600;text-decoration:underline;}
+
+  .staff-cta{background:var(--navy);color:var(--white);border-radius:14px;padding:24px;text-align:center;}
+  .staff-cta h3{font-size:17px;font-weight:600;color:var(--white);}
+  .staff-cta p{font-size:13.5px;color:rgba(255,255,255,0.75);margin-top:8px;}
+  .staff-cta a.btn{display:inline-block;margin-top:16px;background:var(--gold);color:#241A05;padding:11px 22px;border-radius:8px;font-weight:700;font-size:13.5px;text-decoration:none;}
+
+  footer{padding:40px 0;text-align:center;font-size:12.5px;color:rgba(14,27,38,0.45);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="8" r="3.4" fill="#fff"/>
+        <circle cx="7" cy="23" r="3.4" fill="var(--teal)"/>
+        <circle cx="25" cy="23" r="3.4" fill="var(--gold)"/>
+        <path d="M14.3 10.5 8.7 20.2M17.7 10.5l5.6 9.7M10.4 23h11.2" stroke="rgba(255,255,255,0.5)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      </svg>
+      CoWork<span>+</span>
+    </div>
+    <div class="navlinks">
+      <a href="index.html">← Volver a la landing</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="card" id="authCard">
+    <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="8" r="3.4" fill="var(--navy)"/>
+      <circle cx="7" cy="23" r="3.4" fill="var(--teal)"/>
+      <circle cx="25" cy="23" r="3.4" fill="var(--gold)"/>
+      <path d="M14.3 10.5 8.7 20.2M17.7 10.5l5.6 9.7M10.4 23h11.2" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".5"/>
+    </svg>
+    <h1>Mi cuenta</h1>
+    <p class="sub">Inicia sesión o regístrate para ver el estado de tu reserva</p>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="login">Iniciar sesión</div>
+      <div class="tab" data-tab="registro">Crear cuenta</div>
+    </div>
+
+    <div class="msg error" id="authError"></div>
+    <div class="msg success" id="authSuccess"></div>
+
+    <form id="loginForm">
+      <div class="field">
+        <label>Correo</label>
+        <input type="email" id="loginEmail" placeholder="tu@correo.com" required>
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" id="loginPassword" placeholder="********" required>
+      </div>
+      <button type="submit" class="submit-btn" id="loginBtn">Iniciar sesión</button>
+    </form>
+
+    <form id="registerForm" style="display:none;">
+      <div class="field">
+        <label>Nombre completo</label>
+        <input type="text" id="regNombre" placeholder="Tu nombre" required>
+      </div>
+      <div class="field">
+        <label>Correo</label>
+        <input type="email" id="regEmail" placeholder="tu@correo.com" required>
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres" minlength="6" required>
+      </div>
+      <div class="field">
+        <label>¿Cómo te vas a registrar?</label>
+        <div class="role-row" id="roleRow">
+          <div class="role-opt selected" data-rol="cliente">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>
+            Soy cliente
+          </div>
+          <div class="role-opt" data-rol="personal">
+            <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            Soy personal de CoWork+
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="submit-btn" id="regBtn">Crear cuenta</button>
+    </form>
+
+    <div class="setup-warning" id="setupWarning" style="display:none;">
+      ⚠️ Esta página todavía no está conectada a tu base de datos. Abre index.html, sigue las instrucciones del bloque "BASE DE DATOS REAL" y pega los mismos valores de SUPABASE_URL y SUPABASE_ANON_KEY en este archivo (cuenta.html). También corre el segundo script SQL (perfiles y roles) en el Editor SQL de Supabase.
+    </div>
+  </div>
+
+  <div class="dash-card" id="dashCard" style="display:none;">
+    <div class="dash-top">
+      <div class="avatar-big" id="avatarInitial">?</div>
+      <div>
+        <h2 id="dashNombre">-</h2>
+        <p id="dashCorreo">-</p>
+        <span class="role-badge" id="dashRoleBadge"></span>
+      </div>
+      <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div id="clienteView" style="display:none;">
+      <h3 style="font-size:15px;font-weight:600;margin-bottom:14px;">Tu reserva</h3>
+      <div id="resList"></div>
+    </div>
+
+    <div id="personalView" style="display:none;">
+      <div class="staff-cta">
+        <h3>Tienes acceso de personal</h3>
+        <p>Desde el panel de administrador puedes ver todas las reservas, aprobarlas o rechazarlas.</p>
+        <a href="admin.html" class="btn">Ir al panel de administrador →</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>CoWork+ · Proyecto académico ACA 2026</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+  const SUPABASE_URL = "https://gbxxgexelqwmmoijacmj.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_5-P7UXebrIFpwVF14mQk9A_aXV1mne2";
+  const configuredIntent = SUPABASE_URL !== "TU_SUPABASE_URL" && SUPABASE_ANON_KEY !== "TU_SUPABASE_ANON_KEY";
+  let supabaseClient = null;
+  try {
+    if (configuredIntent && window.supabase) {
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+  } catch (e) {
+    console.error('No se pudo conectar Supabase:', e);
+  }
+  const configured = !!supabaseClient;
+
+  const authCard = document.getElementById('authCard');
+  const dashCard = document.getElementById('dashCard');
+  const authError = document.getElementById('authError');
+  const authSuccess = document.getElementById('authSuccess');
+
+  if(!configured){
+    document.getElementById('setupWarning').style.display = 'block';
+    document.getElementById('loginBtn').disabled = true;
+    document.getElementById('regBtn').disabled = true;
+  }
+
+  function showError(msg){
+    authSuccess.style.display = 'none';
+    authError.textContent = msg;
+    authError.style.display = 'block';
+  }
+  function showSuccess(msg){
+    authError.style.display = 'none';
+    authSuccess.textContent = msg;
+    authSuccess.style.display = 'block';
+  }
+
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      authError.style.display = 'none';
+      authSuccess.style.display = 'none';
+      if(this.dataset.tab === 'login'){
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('registerForm').style.display = 'none';
+      } else {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'block';
+      }
+    });
+  });
+
+  let selectedRol = 'cliente';
+  document.getElementById('roleRow').addEventListener('click', function(e){
+    const opt = e.target.closest('.role-opt');
+    if(!opt) return;
+    [...this.children].forEach(c => c.classList.remove('selected'));
+    opt.classList.add('selected');
+    selectedRol = opt.dataset.rol;
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    if(!configured) return;
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = true;
+    btn.textContent = 'Entrando...';
+
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+    btn.disabled = false;
+    btn.textContent = 'Iniciar sesión';
+
+    if(error){
+      showError('No pudimos iniciar sesión: ' + error.message);
+      return;
+    }
+    await loadDashboard();
+  });
+
+  document.getElementById('registerForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    if(!configured) return;
+    const btn = document.getElementById('regBtn');
+    btn.disabled = true;
+    btn.textContent = 'Creando cuenta...';
+
+    const nombre = document.getElementById('regNombre').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value;
+
+    const { data, error } = await supabaseClient.auth.signUp({ email, password });
+
+    if(error){
+      btn.disabled = false;
+      btn.textContent = 'Crear cuenta';
+      showError('No pudimos crear tu cuenta: ' + error.message);
+      return;
+    }
+
+    if(!data.session){
+      btn.disabled = false;
+      btn.textContent = 'Crear cuenta';
+      showSuccess('¡Cuenta creada! Revisa tu correo para confirmar tu cuenta y luego inicia sesión.');
+      return;
+    }
+
+    const { error: perfilError } = await supabaseClient.from('perfiles').insert([
+      { id: data.user.id, nombre, correo: email, rol: selectedRol }
+    ]);
+
+    btn.disabled = false;
+    btn.textContent = 'Crear cuenta';
+
+    if(perfilError){
+      showError('Tu cuenta se creó pero no pudimos guardar tu perfil: ' + perfilError.message);
+      return;
+    }
+    await loadDashboard();
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', async function(){
+    if(supabaseClient) await supabaseClient.auth.signOut();
+    location.reload();
+  });
+
+  async function loadDashboard(){
+    const { data: sessionData } = await supabaseClient.auth.getSession();
+    if(!sessionData.session) return;
+
+    const user = sessionData.session.user;
+
+    const { data: perfil, error: perfilError } = await supabaseClient
+      .from('perfiles')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+
+    if(perfilError || !perfil){
+      showError('No encontramos tu perfil. Si acabas de registrarte, intenta iniciar sesión de nuevo.');
+      return;
+    }
+
+    authCard.style.display = 'none';
+    dashCard.style.display = 'block';
+
+    document.getElementById('avatarInitial').textContent = perfil.nombre.charAt(0).toUpperCase();
+    document.getElementById('dashNombre').textContent = perfil.nombre;
+    document.getElementById('dashCorreo').textContent = perfil.correo;
+
+    const badge = document.getElementById('dashRoleBadge');
+    badge.textContent = perfil.rol === 'personal' ? 'Personal de CoWork+' : 'Cliente';
+    badge.className = 'role-badge ' + perfil.rol;
+
+    if(perfil.rol === 'personal'){
+      document.getElementById('personalView').style.display = 'block';
+      document.getElementById('clienteView').style.display = 'none';
+    } else {
+      document.getElementById('clienteView').style.display = 'block';
+      document.getElementById('personalView').style.display = 'none';
+      await loadMisReservas(user.id, perfil.correo);
+    }
+  }
+
+  async function loadMisReservas(userId, correo){
+    const { data, error } = await supabaseClient
+      .from('reservas')
+      .select('*')
+      .or(`user_id.eq.${userId},correo.eq.${correo}`)
+      .order('created_at', { ascending: false });
+
+    const box = document.getElementById('resList');
+    if(error || !data || data.length === 0){
+      box.innerHTML = '<div class="empty-res">Todavía no tienes ninguna reserva. <a href="index.html#registro">Haz tu primera reserva &rarr;</a></div>';
+      return;
+    }
+
+    box.innerHTML = data.map(r => `
+      <div class="res-item">
+        <div class="top-row">
+          <div class="plan">${r.plan ? escapeHtml(r.plan) : 'Reserva CoWork+'}</div>
+          <span class="badge ${r.estado}">${capitalize(r.estado)}</span>
+        </div>
+        <div class="date">${fmtDate(r.created_at)}</div>
+      </div>
+    `).join('');
+  }
+
+  function fmtDate(iso){
+    const d = new Date(iso);
+    return d.toLocaleDateString('es-CO', { day:'2-digit', month:'short', year:'numeric' }) + ' - ' + d.toLocaleTimeString('es-CO', { hour:'2-digit', minute:'2-digit' });
+  }
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+  function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  (async function checkSession(){
+    if(!configured) return;
+    const { data } = await supabaseClient.auth.getSession();
+    if(data.session) await loadDashboard();
+  })();
+</script>
+
+</body>
+</html>
