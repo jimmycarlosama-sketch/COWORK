@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CoWork+ — Panel de administrador</title>
+<title>CoWork+ — Coworking flexible y colaborativo</title>
+<meta name="description" content="CoWork+ es un prototipo académico para encontrar y solicitar espacios de coworking flexibles y facilitar conexiones profesionales desde una sola plataforma.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -20,384 +21,872 @@
     --line:rgba(14,27,38,0.11);
     --white:#FFFFFF;
     --muted:rgba(14,27,38,0.62);
-    --red:#B3423C;
-    --red-pale:#F8E7E5;
   }
-  *{box-sizing:border-box;}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
-  h1,h2,h3{font-family:'Fraunces',serif;margin:0;letter-spacing:-0.01em;}
   svg.icon{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-0.15em;}
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Fraunces',serif;margin:0;line-height:1.08;letter-spacing:-0.01em;}
+  p{margin:0;}
   a{color:inherit;}
-  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+  ul{margin:0;padding:0;list-style:none;}
+  button{font-family:'Inter',sans-serif;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 32px;}
+  section{padding:96px 0;}
+  .kicker{font-size:13px;font-weight:600;color:var(--teal-deep);margin-bottom:10px;}
+  .sec-head{max-width:640px;margin-bottom:52px;}
+  .sec-head h2{font-size:clamp(26px,3vw,36px);font-weight:600;}
+  .sec-head p{margin-top:14px;font-size:16px;color:var(--muted);line-height:1.6;}
+  .sec-head.center{margin-left:auto;margin-right:auto;text-align:center;}
 
   /* NAV */
-  nav{background:var(--navy);color:var(--white);}
-  nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;}
-  .logo{font-family:'Fraunces',serif;font-weight:700;font-size:19px;display:flex;align-items:center;gap:9px;}
-  .logo span{color:var(--gold);}
-  .navlinks a{font-size:13.5px;font-weight:500;opacity:.8;text-decoration:none;}
+  nav{position:sticky;top:0;z-index:60;background:rgba(246,245,240,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;}
+  .logo{font-family:'Fraunces',serif;font-weight:700;font-size:21px;color:var(--navy);display:flex;align-items:center;gap:9px;}
+  .logo span{color:var(--teal-deep);}
+  .navlinks{display:flex;gap:28px;font-size:14px;font-weight:500;}
+  .navlinks a{opacity:.75;transition:opacity .15s;}
   .navlinks a:hover{opacity:1;}
+  nav .cta-small{background:var(--navy);color:var(--white);padding:10px 20px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none;transition:transform .15s;}
+  nav .cta-small:hover{transform:translateY(-1px);}
+  .hamburger{display:none;background:none;border:none;padding:8px;cursor:pointer;color:var(--ink);}
+  .hamburger svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;}
+  @media (max-width:900px){
+    .navlinks{
+      display:none;
+      position:absolute; top:100%; left:0; right:0;
+      background:var(--paper); border-bottom:1px solid var(--line);
+      flex-direction:column; gap:0; padding:8px 28px 14px;
+      box-shadow:0 12px 24px rgba(11,42,71,0.08);
+    }
+    .navlinks.open{display:flex;}
+    .navlinks a{padding:12px 0; border-bottom:1px solid var(--line); opacity:1;}
+    .navlinks a:last-child{border-bottom:none;}
+    .hamburger{display:inline-flex;}
+    nav .wrap{position:relative;}
+  }
 
-  /* LOGIN */
-  .login-wrap{min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:40px 20px;}
-  .login-card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:38px 36px;max-width:380px;width:100%;box-shadow:0 20px 50px rgba(11,42,71,0.08);}
-  .login-card .mark{width:44px;height:44px;margin:0 auto 18px;display:block;}
-  .login-card h1{font-size:22px;font-weight:600;text-align:center;}
-  .login-card p.sub{text-align:center;font-size:13.5px;color:var(--muted);margin-top:8px;margin-bottom:26px;}
-  .field{margin-bottom:14px;}
-  .field label{display:block;font-size:12.5px;font-weight:600;margin-bottom:6px;}
-  .field input{width:100%;padding:11px 13px;border-radius:8px;border:1px solid var(--line);font-size:14px;font-family:'Inter',sans-serif;background:var(--paper);}
-  .field input:focus{outline:none;border-color:var(--teal-deep);}
-  .login-btn{width:100%;background:var(--navy);color:var(--white);border:none;padding:13px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;}
-  .login-btn:hover{background:var(--navy-2);}
-  .login-btn:disabled{opacity:.6;cursor:default;}
-  .login-error{background:var(--red-pale);color:var(--red);border:1px solid rgba(179,66,60,0.3);padding:10px 12px;border-radius:8px;font-size:13px;margin-bottom:14px;display:none;}
-  .setup-warning{background:#F6ECD9;border:1px solid rgba(200,154,76,0.5);color:var(--gold-deep);padding:14px 16px;border-radius:10px;font-size:13px;line-height:1.6;margin-top:20px;}
+  /* HERO */
+  .hero{background:linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 55%, var(--teal-deep) 135%);color:var(--white);padding:88px 0 110px;position:relative;overflow:hidden;}
+  .hero::after{content:"";position:absolute;right:-120px;top:-80px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle at 30% 30%, rgba(0,168,150,0.5), transparent 70%);}
+  .hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:center;}
+  .eyebrow{display:inline-block;font-size:13px;font-weight:600;color:#A8E6DE;margin-bottom:18px;}
+  .hero h1{font-size:clamp(32px,4.2vw,52px);font-weight:600;color:var(--white);}
+  .hero h1 em{font-style:normal;color:var(--gold);}
+  .hero p.sub{margin-top:20px;font-size:17px;line-height:1.55;color:rgba(255,255,255,0.82);max-width:46ch;}
+  .hero-stats{display:flex;gap:28px;margin-top:28px;}
+  .hero-stats div{border-left:2px solid rgba(255,255,255,0.25);padding-left:12px;}
+  .hero-stats .n{font-family:'Fraunces',serif;font-size:22px;font-weight:600;}
+  .hero-stats .l{font-size:12px;color:rgba(255,255,255,0.65);}
+  .hero-form{margin-top:30px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);padding:22px;border-radius:14px;max-width:480px;}
+  .hero-form p.label{font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:12px;}
+  .field-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .field-row input{flex:1;min-width:160px;padding:13px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.95);font-family:'Inter',sans-serif;font-size:14px;}
+  .field-row button{background:var(--gold);color:#241A05;border:none;padding:13px 22px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;transition:filter .15s, transform .15s;white-space:nowrap;}
+  .field-row button:hover{filter:brightness(1.06);transform:translateY(-1px);}
+  .form-note{margin-top:10px;font-size:12px;color:rgba(255,255,255,0.55);}
+  .form-success{display:none;margin-top:16px;background:rgba(0,168,150,0.18);border:1px solid rgba(0,168,150,0.5);padding:16px 18px;border-radius:12px;max-width:480px;font-size:13.5px;line-height:1.5;}
+  .plan-chip{display:flex;align-items:center;gap:10px;background:rgba(200,154,76,0.18);border:1px solid rgba(200,154,76,0.5);color:#fff;padding:9px 12px;border-radius:9px;font-size:13px;margin-bottom:14px;}
+  .plan-chip strong{color:var(--gold);}
+  .plan-chip-clear{margin-left:auto;background:none;border:none;color:rgba(255,255,255,0.65);font-size:12px;text-decoration:underline;cursor:pointer;padding:0;}
+  .plan-chip-clear:hover{color:#fff;}
+  .plan.selected{border:2px solid var(--teal-deep);box-shadow:0 14px 30px rgba(8,101,92,0.18);}
+  .plan.selected button{background:var(--teal-deep);color:#fff;border-color:var(--teal-deep);}
+  .plan button.chosen{background:var(--teal-deep)!important;color:#fff!important;border-color:var(--teal-deep)!important;}
 
-  /* DASHBOARD */
-  .dash{display:none;}
-  .dash-top{padding:36px 0 20px;}
-  .dash-top h1{font-size:26px;font-weight:600;}
-  .dash-top p{color:var(--muted);font-size:14px;margin-top:6px;}
-  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:26px 0 34px;}
-  .stat{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:18px 20px;}
-  .stat .v{font-family:'Fraunces',serif;font-size:28px;font-weight:600;}
-  .stat .l{font-size:12.5px;color:var(--muted);margin-top:4px;}
-  .stat.pend .v{color:var(--gold-deep);}
-  .stat.appr .v{color:var(--teal-deep);}
-  .stat.rej .v{color:var(--red);}
+  .mockcard{background:var(--white);color:var(--ink);border-radius:16px;padding:26px;box-shadow:0 30px 60px rgba(0,0,0,0.28);transform:rotate(1.4deg);}
+  .mchead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+  .mchead span{font-size:13px;font-weight:600;color:var(--teal-deep);}
+  .mockrow{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .mockrow:last-child{border-bottom:none;}
+  .tag{font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;}
+  .tag.green{background:var(--teal-pale);color:var(--teal-deep);}
+  .tag.orange{background:#F6ECD9;color:var(--gold-deep);}
+  .match{font-weight:700;color:var(--teal-deep);}
+  .mrow-item{display:flex;align-items:center;gap:11px;}
+  .micon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;}
+  .micon.teal{background:var(--teal-pale);color:var(--teal-deep);}
+  .micon.navy{background:#E7EDF3;color:var(--navy);}
+  .micon.gold{background:#F6ECD9;color:var(--gold-deep);}
 
-  .filter-row{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;align-items:center;justify-content:space-between;}
-  .filter-chips{display:flex;gap:8px;}
-  .fchip{border:1px solid var(--line);background:var(--white);padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink);}
-  .fchip.active{background:var(--navy);color:var(--white);border-color:var(--navy);}
-  .refresh-btn{border:1px solid var(--line);background:var(--white);padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;}
-  .refresh-btn:hover{border-color:var(--teal-deep);color:var(--teal-deep);}
+  /* PROBLEM STRIP */
+  .problem{background:var(--ink);color:var(--white);padding:56px 0;}
+  .problem .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+  .problem h3{font-size:16px;font-weight:600;margin-bottom:8px;}
+  .problem p{font-size:14px;color:rgba(255,255,255,0.65);line-height:1.55;}
+  .problem .n{font-family:'Fraunces',serif;color:var(--gold);font-size:26px;display:block;margin-bottom:10px;}
 
-  table{width:100%;border-collapse:collapse;background:var(--white);border-radius:12px;overflow:hidden;border:1px solid var(--line);}
-  thead th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);padding:12px 16px;background:var(--paper);border-bottom:1px solid var(--line);}
-  tbody td{padding:14px 16px;font-size:13.5px;border-bottom:1px solid var(--line);vertical-align:middle;}
-  tbody tr:last-child td{border-bottom:none;}
-  tbody tr:hover{background:rgba(12,156,139,0.03);}
-  .badge{display:inline-block;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;}
-  .badge.pendiente{background:#F6ECD9;color:var(--gold-deep);}
-  .badge.aprobada{background:var(--teal-pale);color:var(--teal-deep);}
-  .badge.rechazada{background:var(--red-pale);color:var(--red);}
-  .row-actions{display:flex;gap:8px;}
-  .abtn{border:none;padding:7px 12px;border-radius:7px;font-size:12.5px;font-weight:700;cursor:pointer;}
-  .abtn.approve{background:var(--teal-pale);color:var(--teal-deep);}
-  .abtn.approve:hover{background:var(--teal);color:#fff;}
-  .abtn.reject{background:var(--red-pale);color:var(--red);}
-  .abtn.reject:hover{background:var(--red);color:#fff;}
-  .abtn.undo{background:var(--paper);color:var(--muted);border:1px solid var(--line);}
-  .abtn:disabled{opacity:.5;cursor:default;}
-  .empty-state{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;}
-  .empty-state svg{width:40px;height:40px;margin-bottom:14px;opacity:.4;}
+  /* BENEFITS */
+  .benefits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .benefit{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:28px 24px;}
+  .bicon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px;}
+  .bicon.teal{background:var(--teal-pale);color:var(--teal-deep);}
+  .bicon.navy{background:#E7EDF3;color:var(--navy);}
+  .bicon.gold{background:#F6ECD9;color:var(--gold-deep);}
+  .benefit h3{font-size:18px;font-weight:600;margin-bottom:8px;}
+  .benefit p{font-size:14px;color:var(--muted);line-height:1.55;}
 
-  footer{padding:40px 0;text-align:center;font-size:12.5px;color:rgba(14,27,38,0.45);}
+  /* INTERACTIVE MATCHING DEMO */
+  .demo{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:40px;}
+  .demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+  .demo h3{font-size:20px;font-weight:600;margin-bottom:8px;}
+  .demo p.d{font-size:14.5px;color:var(--muted);margin-bottom:20px;line-height:1.55;}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{border:1px solid var(--line);background:var(--paper);padding:9px 14px;border-radius:999px;font-size:13.5px;font-weight:500;cursor:pointer;transition:all .15s;}
+  .chip.active, .chip:hover{border-color:var(--teal-deep);background:var(--teal-pale);color:var(--teal-deep);}
+  .demo-results{display:flex;flex-direction:column;gap:10px;min-height:210px;}
+  .result-card{border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;font-size:14px;background:var(--paper);animation:fadein .35s ease;}
+  @keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .result-card .who{font-weight:600;}
+  .result-card .role{color:var(--muted);font-size:12.5px;}
 
-  @media (max-width:800px){
-    .stat-row{grid-template-columns:1fr 1fr;}
-    table, thead, tbody, th, td, tr{display:block;}
-    thead{display:none;}
-    tbody tr{border:1px solid var(--line);border-radius:10px;margin-bottom:12px;padding:10px 4px;}
-    tbody td{border-bottom:none;padding:6px 12px;}
-    tbody td::before{content:attr(data-label);display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:2px;}
+  /* HOW IT WORKS */
+  .how{background:var(--navy);color:var(--white);}
+  .how .sec-head h2{color:var(--white);}
+  .how .sec-head p{color:rgba(255,255,255,0.7);}
+  .how .kicker{color:#A8E6DE;}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative;}
+  .steps::before{content:"";position:absolute;top:19px;left:8%;right:8%;height:1px;background:rgba(255,255,255,0.25);}
+  .step .dot{width:40px;height:40px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--navy);position:relative;z-index:1;margin-bottom:22px;}
+  .step h3{font-size:17px;font-weight:600;margin-bottom:8px;}
+  .step p{font-size:14px;color:rgba(255,255,255,0.68);line-height:1.55;}
+
+  /* LOCATIONS - Smart Cities */
+  .loc-tabs{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;}
+  .loc-tab{border:1px solid var(--line);background:var(--white);padding:10px 16px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer;}
+  .loc-tab.active{background:var(--navy);color:var(--white);border-color:var(--navy);}
+  .loc-card{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;background:var(--white);border:1px solid var(--line);border-radius:14px;padding:24px 26px;}
+  .loc-card h3{font-size:19px;font-weight:600;margin-bottom:6px;}
+  .loc-card p{font-size:14px;color:var(--muted);}
+  .occ-bar{width:220px;height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:10px;}
+  .occ-fill{height:100%;background:var(--teal);border-radius:99px;}
+  .occ-label{font-size:12.5px;color:var(--muted);margin-top:6px;}
+  .avail-badge{text-align:center;background:var(--teal-pale);color:var(--teal-deep);border-radius:12px;padding:14px 22px;font-weight:700;font-size:20px;font-family:'Fraunces',serif;}
+  .avail-badge span{display:block;font-size:11px;font-weight:600;color:var(--teal-deep);opacity:.8;font-family:'Inter',sans-serif;margin-top:2px;}
+
+  /* MARKETPLACE */
+  .market-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .market-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:22px;}
+  .market-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+  .avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--navy));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-family:'Fraunces',serif;}
+  .stars{color:var(--gold);font-size:13px;}
+  .market-card h4{font-size:16px;font-weight:600;margin-bottom:4px;}
+  .market-card .role{font-size:13px;color:var(--muted);margin-bottom:12px;}
+  .market-price{font-size:14px;font-weight:700;color:var(--teal-deep);}
+
+  /* PRICING */
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch;}
+  .plan{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:32px 28px;display:flex;flex-direction:column;}
+  .plan.feat{border:2px solid var(--teal-deep);position:relative;transform:translateY(-8px);box-shadow:0 20px 40px rgba(2,128,144,0.15);}
+  .plan.feat::before{content:"Más elegido";position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--teal-deep);color:#fff;font-size:11px;font-weight:700;padding:5px 14px;border-radius:999px;}
+  .plan h3{font-size:18px;font-weight:600;margin-bottom:6px;}
+  .plan .price{font-family:'Fraunces',serif;font-size:32px;font-weight:600;margin:10px 0 4px;color:var(--navy);}
+  .plan .price small{font-size:13px;font-weight:400;color:var(--muted);}
+  .plan ul{margin:22px 0;flex:1;}
+  .plan li{font-size:13.5px;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--line);}
+  .plan li:last-child{border:none;}
+  .plan li::before{content:"✓ ";color:var(--teal-deep);font-weight:700;}
+  .plan button{width:100%;padding:13px;border-radius:9px;border:1.5px solid var(--navy);background:transparent;color:var(--navy);font-weight:700;font-size:14px;cursor:pointer;}
+  .plan.feat button{background:var(--navy);color:var(--white);}
+  .price-note{margin-top:20px;font-size:12.5px;color:var(--muted);}
+
+  /* SUSTAINABILITY */
+  .sustain{background:linear-gradient(120deg,#0F3460,#0B1F2A);color:var(--white);border-radius:20px;padding:50px 44px;}
+  .sustain .top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;margin-bottom:34px;}
+  .sustain h2{color:var(--white);font-size:26px;font-weight:600;max-width:420px;}
+  .sustain p.d{color:rgba(255,255,255,0.68);font-size:14px;max-width:340px;}
+  .sustain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .sustain-metric{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:12px;padding:22px;}
+  .sustain-metric .v{font-family:'Fraunces',serif;font-size:30px;font-weight:600;color:var(--teal);}
+  .sustain-metric .l{font-size:13px;color:rgba(255,255,255,0.65);margin-top:6px;}
+
+  /* TESTIMONIALS */
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .testi{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:26px;}
+  .testi .stars{margin-bottom:14px;}
+  .star-ic{width:14px;height:14px;stroke-width:1.3;}
+  .stars-num{font-size:12.5px;color:var(--muted);margin-left:4px;font-weight:600;vertical-align:1px;}
+  .testi p.q{font-size:14.5px;line-height:1.6;color:var(--ink);}
+  .testi .who{display:flex;align-items:center;gap:10px;margin-top:18px;}
+  .testi .who .avatar{width:36px;height:36px;font-size:13px;}
+  .testi .who div h5{font-size:13.5px;font-weight:600;margin:0;}
+  .testi .who div span{font-size:12px;color:var(--muted);}
+
+  /* FAQ */
+  .faq{max-width:760px;margin:0 auto;}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-q{width:100%;text-align:left;background:none;border:none;padding:20px 4px;font-size:16px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--ink);}
+  .faq-q .plus{font-size:20px;color:var(--teal-deep);transition:transform .2s;}
+  .faq-item.open .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+  .faq-a p{padding:0 4px 20px;font-size:14.5px;color:var(--muted);line-height:1.6;max-width:64ch;}
+
+  /* PROOF / SHARE */
+  .proof{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+  .proof-card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:32px;}
+  .fb-field{margin-bottom:14px;}
+  .fb-field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+  .fb-field input{width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);font-size:13.5px;font-family:'Inter',sans-serif;background:var(--paper);}
+  .fb-field input:focus{outline:none;border-color:var(--teal-deep);}
+  .fb-submit{width:100%;background:var(--navy);color:var(--white);border:none;padding:12px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;margin-top:4px;}
+  .fb-submit:hover{background:var(--navy-2);}
+  .share-row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+  .share-btn{border:1px solid var(--line);background:var(--white);padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:7px;color:var(--ink);}
+  .share-btn:hover{border-color:var(--teal-deep);color:var(--teal-deep);}
+  .copy-box{display:flex;gap:8px;margin-top:16px;align-items:center;border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:0 4px 0 12px;}
+  .copy-icon{color:var(--muted);display:flex;}
+  .copy-box input{flex:1;padding:11px 6px;border:none;background:transparent;font-size:13px;color:var(--muted);}
+  .copy-box input:focus{outline:none;}
+  .copy-box button{background:var(--ink);color:var(--white);border:none;padding:11px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;margin:4px;}
+
+  /* METRICS */
+  .metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .metric{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:26px 22px;text-align:left;}
+  .metric .value{font-family:'Fraunces',serif;font-size:36px;font-weight:600;color:var(--navy);}
+  .metric .lbl{font-size:13px;color:var(--muted);margin-top:6px;}
+  .metric-note{margin-top:18px;font-size:13px;color:rgba(11,31,42,0.5);}
+
+  /* FINAL CTA */
+  .final-cta{background:linear-gradient(120deg,var(--teal-deep),var(--teal));color:var(--white);text-align:center;border-radius:20px;padding:60px 40px;}
+  .final-cta h2{color:var(--white);font-size:clamp(24px,3vw,34px);}
+  .final-cta p{margin-top:12px;color:rgba(255,255,255,0.85);}
+  .final-cta .field-row{max-width:440px;margin:26px auto 0;}
+  .final-cta .field-row input{border:1px solid rgba(255,255,255,0.4);}
+  .final-cta .field-row button{background:var(--ink);color:var(--white);}
+
+  footer{padding:44px 0;text-align:center;font-size:13px;color:rgba(11,31,42,0.5);border-top:1px solid var(--line);margin-top:20px;}
+
+  @media (max-width:900px){
+    .hero .wrap{grid-template-columns:1fr;}
+    .mockcard{transform:none;margin-top:20px;}
+    .problem .wrap{grid-template-columns:1fr;}
+    .benefits-grid{grid-template-columns:1fr;}
+    .demo-grid{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;gap:32px;}
+    .steps::before{display:none;}
+    .loc-card{grid-template-columns:1fr;text-align:left;}
+    .market-grid{grid-template-columns:1fr;}
+    .pricing-grid{grid-template-columns:1fr;}
+    .plan.feat{transform:none;}
+    .sustain-grid{grid-template-columns:1fr;}
+    .testi-grid{grid-template-columns:1fr;}
+    .proof{grid-template-columns:1fr;}
+    .metric-grid{grid-template-columns:1fr 1fr;}
   }
 </style>
-</head>
-<body>
+<!--
+  PASO 1 — Contador de visitas real (GoatCounter, gratis, sin tarjeta):
+  1. Entra a https://www.goatcounter.com/ → "Sign up"
+  2. Elige un código de sitio, por ejemplo: cowork-plus  (tu URL quedaría cowork-plus.goatcounter.com)
+  3. Reemplaza TUCODIGO abajo por ese código y descomenta la línea del script
+-->
+<script data-goatcounter="https://jimmy-carlosama.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
-<nav>
-  <div class="wrap">
-    <div class="logo">
-      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
-        <circle cx="16" cy="8" r="3.4" fill="#fff"/>
-        <circle cx="7" cy="23" r="3.4" fill="var(--teal)"/>
-        <circle cx="25" cy="23" r="3.4" fill="var(--gold)"/>
-        <path d="M14.3 10.5 8.7 20.2M17.7 10.5l5.6 9.7M10.4 23h11.2" stroke="rgba(255,255,255,0.5)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
-      </svg>
-      CoWork<span>+</span> · Admin
-    </div>
-    <div class="navlinks">
-      <a href="index.html">← Volver a la landing</a>
-      <a href="#" id="logoutLink" style="margin-left:20px;display:none;">Cerrar sesión</a>
-    </div>
-  </div>
-</nav>
+<!--
+  BASE DE DATOS REAL (Supabase, gratis, sin tarjeta) — reservas con estado pendiente/aprobada/rechazada
+  1. Entra a https://supabase.com → "Start your project" → crea cuenta gratis
+  2. Crea un proyecto nuevo (elige una contraseña de base de datos y guárdala)
+  3. En el menú izquierdo entra a "SQL Editor" → "New query" y pega esto, luego dale "Run":
 
-<!-- LOGIN -->
-<div class="login-wrap" id="loginWrap">
-  <div class="login-card">
-    <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
-      <circle cx="16" cy="8" r="3.4" fill="var(--navy)"/>
-      <circle cx="7" cy="23" r="3.4" fill="var(--teal)"/>
-      <circle cx="25" cy="23" r="3.4" fill="var(--gold)"/>
-      <path d="M14.3 10.5 8.7 20.2M17.7 10.5l5.6 9.7M10.4 23h11.2" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".5"/>
-    </svg>
-    <h1>Panel de administrador</h1>
-    <p class="sub">Inicia sesión para revisar y aprobar reservas</p>
+     create table reservas (
+       id uuid primary key default gen_random_uuid(),
+       nombre text not null,
+       correo text not null,
+       plan text,
+       estado text not null default 'pendiente',
+       created_at timestamptz not null default now()
+     );
+     alter table reservas enable row level security;
+     create policy "cualquiera puede reservar" on reservas
+       for insert to anon with check (true);
+     create policy "solo admins ven las reservas" on reservas
+       for select to authenticated using (true);
+     create policy "solo admins aprueban o rechazan" on reservas
+       for update to authenticated using (true);
 
-    <div class="login-error" id="loginError"></div>
-
-    <form id="loginForm">
-      <div class="field">
-        <label>Correo</label>
-        <input type="email" id="loginEmail" placeholder="tu@correo.com" required>
-      </div>
-      <div class="field">
-        <label>Contraseña</label>
-        <input type="password" id="loginPassword" placeholder="••••••••" required>
-      </div>
-      <button type="submit" class="login-btn" id="loginBtn">Iniciar sesión</button>
-    </form>
-
-    <div class="setup-warning" id="setupWarning" style="display:none;">
-      ⚠️ Este panel todavía no está conectado a tu base de datos. Abre <code>index.html</code>, busca el bloque "BASE DE DATOS REAL" cerca del <code>&lt;head&gt;</code> y sigue los 5 pasos para crear tu proyecto en Supabase y tu usuario admin. Luego pega la misma URL y llave en este archivo (<code>admin.html</code>).
-    </div>
-  </div>
-</div>
-
-<!-- DASHBOARD -->
-<div class="dash" id="dash">
-  <div class="wrap">
-    <div class="dash-top">
-      <h1>Reservas — CoWork+</h1>
-      <p>Revisa cada solicitud y decide si se aprueba o se rechaza. Los cambios quedan guardados al instante.</p>
-    </div>
-
-    <div class="stat-row">
-      <div class="stat"><div class="v" id="statTotal">0</div><div class="l">Total de reservas</div></div>
-      <div class="stat pend"><div class="v" id="statPend">0</div><div class="l">Pendientes</div></div>
-      <div class="stat appr"><div class="v" id="statAppr">0</div><div class="l">Aprobadas</div></div>
-      <div class="stat rej"><div class="v" id="statRej">0</div><div class="l">Rechazadas</div></div>
-    </div>
-
-    <div class="filter-row">
-      <div class="filter-chips" id="filterChips">
-        <div class="fchip active" data-f="todas">Todas</div>
-        <div class="fchip" data-f="pendiente">Pendientes</div>
-        <div class="fchip" data-f="aprobada">Aprobadas</div>
-        <div class="fchip" data-f="rechazada">Rechazadas</div>
-      </div>
-      <button class="refresh-btn" id="refreshBtn"><svg class="icon"><use href="#i-refresh"/></svg> Actualizar</button>
-    </div>
-
-    <table>
-      <thead>
-        <tr><th>Nombre</th><th>Correo</th><th>Plan</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
-
-    <div class="empty-state" id="emptyState" style="display:none;">
-      <svg class="icon"><use href="#i-inbox"/></svg>
-      <div>No hay reservas en esta categoría todavía.</div>
-    </div>
-  </div>
-</div>
-
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-<defs>
-  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></symbol>
-  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3 12h4.5l1.5 3h6l1.5-3H21"/><path d="M5 6h14l2 6v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-7Z"/></symbol>
-</defs>
-</svg>
-
-<footer>Panel de administrador — CoWork+ · Proyecto académico ACA 2026</footer>
-
+  4. Ve a "Authentication" → "Users" → "Add user" y crea tu usuario admin (tu correo + una contraseña) — con esto entras al panel admin.html
+  5. Ve a "Project Settings" → "API" y copia:
+     - Project URL     → reemplaza TU_SUPABASE_URL abajo
+     - anon public key → reemplaza TU_SUPABASE_ANON_KEY abajo
+     (haz el mismo reemplazo en admin.html)
+-->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-  // PASO 5 de las instrucciones en index.html: pega aquí los mismos valores
   const SUPABASE_URL = "https://gbxxgexelqwmmoijacmj.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_5-P7UXebrIFpwVF14mQk9A_aXV1mne2";
-
-  const configuredIntent = SUPABASE_URL !== "TU_SUPABASE_URL" && SUPABASE_ANON_KEY !== "TU_SUPABASE_ANON_KEY";
   let supabaseClient = null;
   try {
-    if (configuredIntent && window.supabase) {
+    if (SUPABASE_URL !== "TU_SUPABASE_URL" && SUPABASE_ANON_KEY !== "TU_SUPABASE_ANON_KEY" && window.supabase) {
       supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     }
   } catch (e) {
     console.error('No se pudo conectar Supabase:', e);
   }
-  const configured = !!supabaseClient;
+</script>
+</head>
+<body>
 
-  const loginWrap = document.getElementById('loginWrap');
-  const dash = document.getElementById('dash');
-  const loginError = document.getElementById('loginError');
-  const setupWarning = document.getElementById('setupWarning');
-  const logoutLink = document.getElementById('logoutLink');
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <symbol id="i-code" viewBox="0 0 24 24"><polyline points="9 8 4 12 9 16"/><polyline points="15 8 20 12 15 16"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.2 0-1.1.9-2 2-2h2.4c1.7 0 3.1-1.4 3.1-3.1C20.5 6.6 16.7 3 12 3Z"/><circle cx="7.5" cy="10.5" r="1"/><circle cx="10.5" cy="7" r="1"/><circle cx="15" cy="7.5" r="1"/><circle cx="17" cy="11.5" r="1"/></symbol>
+  <symbol id="i-megaphone" viewBox="0 0 24 24"><path d="M3 11v2a2 2 0 0 0 2 2h1l2.5 5 1.7-.7L9 15h1l8 4V5l-8 4H4a1 1 0 0 0-1 1Z"/><path d="M18 9v6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s7-7.4 7-12.5a7 7 0 1 0-14 0C5 14.6 12 22 12 22Z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><polygon points="13 2 4 14 11 14 10 22 20 10 13 10 13 2"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></symbol>
+  <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="m12 3 10 5-10 5L2 8l10-5Z"/><path d="M6 10.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5M22 8v6"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="3" width="10" height="18" rx="1"/><path d="M14 8h6v13h-6M7 7h.01M11 7h.01M7 11h.01M11 11h.01M7 15h.01M11 15h.01"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3.6 2.8-6 5.5-6s5.5 2.4 5.5 6"/><circle cx="17.5" cy="9" r="2.4"/><path d="M15.8 14.2c2.2.3 4.2 2.3 4.2 5.8"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 4c-9 0-15 5-15 13 0 1 .1 2 .3 3C13 20 20 13 20 4Z"/><path d="M5 20c1-4 4-8 9-11"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="m8 12.2 2.6 2.6L16 9.4"/></symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M6.5 17.5 4 20l2.6-.7A8.5 8.5 0 1 0 4 12c0 1.5.4 2.9 1.1 4.1Z"/><path d="M9 9.7c0-.5.4-1 1-1h.6c.3 0 .5.2.6.5l.6 1.6c.1.3 0 .6-.2.8l-.6.6c.4 1 1.3 1.9 2.3 2.3l.6-.6c.2-.2.5-.3.8-.2l1.6.6c.3.1.5.3.5.6v.6c0 .6-.5 1-1 1-3.3 0-6.8-3.5-6.8-6.8Z"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r=".8" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 6.5 8 6 8-6"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.9 6.3.7-4.7 4.5 1.2 6.4L12 17.3l-5.5 3.2 1.2-6.4L3 9.6l6.3-.7L12 3Z"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M9.5 14.5 14.5 9.5"/><path d="M11 6.5 13 4.4a3.5 3.5 0 0 1 5 5L16 11.4M13 17.5l-2 2.1a3.5 3.5 0 0 1-5-5l1.9-2"/></symbol>
+</defs>
+</svg>
 
-  if(!configured){
-    setupWarning.style.display = 'block';
-    document.getElementById('loginBtn').disabled = true;
-  }
+<nav>
+  <div class="wrap">
+    <div class="logo">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="8" r="3.4" fill="var(--navy)"/>
+        <circle cx="7" cy="23" r="3.4" fill="var(--teal)"/>
+        <circle cx="25" cy="23" r="3.4" fill="var(--gold)"/>
+        <path d="M14.3 10.5 8.7 20.2M17.7 10.5l5.6 9.7M10.4 23h11.2" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".55"/>
+      </svg>
+      CoWork<span>+</span>
+    </div>
+    <div class="navlinks" id="navLinks">
+      <a href="#beneficios">Beneficios</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#espacios">Espacios</a>
+      <a href="#precios">Precios</a>
+      <a href="#faq">Preguntas</a>
+      <a href="cuenta.html">Mi cuenta</a>
+    </div>
+    <a class="cta-small" href="#registro">Probar CoWork+</a>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menú">
+      <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</nav>
 
-  let currentFilter = 'todas';
-  let allReservas = [];
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">MVP · Prueba de concepto</span>
+      <h1>Trabaja donde tus ideas <em>pueden crecer.</em></h1>
+      <p class="sub">Encuentra y solicita espacios de coworking por horas o días y, si lo necesitas, conecta con profesionales que pueden aportar a tus proyectos.</p>
 
-  document.getElementById('loginForm').addEventListener('submit', async function(e){
-    e.preventDefault();
-    if(!configured) return;
-    const btn = document.getElementById('loginBtn');
-    btn.disabled = true;
-    btn.textContent = 'Entrando...';
-    loginError.style.display = 'none';
+      <div class="hero-stats">
+        <div><div class="n">Flexible</div><div class="l">por horas o días</div></div>
+        <div><div class="n">Simple</div><div class="l">una sola solicitud</div></div>
+        <div><div class="n">Conecta</div><div class="l">con otros profesionales</div></div>
+      </div>
 
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value;
-
-    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-
-    if(error){
-      btn.disabled = false;
-      btn.textContent = 'Iniciar sesión';
-      loginError.textContent = 'No pudimos iniciar sesión: ' + error.message;
-      loginError.style.display = 'block';
-      return;
-    }
-
-    // verifica que sea personal antes de dejarlo entrar
-    const { data: perfil, error: perfilError } = await supabaseClient
-      .from('perfiles')
-      .select('rol')
-      .eq('id', data.user.id)
-      .single();
-
-    btn.disabled = false;
-    btn.textContent = 'Iniciar sesión';
-
-    if(perfilError || !perfil || perfil.rol !== 'personal'){
-      await supabaseClient.auth.signOut();
-      loginError.textContent = 'Esta cuenta no tiene acceso de personal. Si eres cliente, entra desde cuenta.html.';
-      loginError.style.display = 'block';
-      return;
-    }
-
-    showDashboard();
-  });
-
-  logoutLink.addEventListener('click', async function(e){
-    e.preventDefault();
-    if(supabaseClient) await supabaseClient.auth.signOut();
-    location.reload();
-  });
-
-  async function showDashboard(){
-    loginWrap.style.display = 'none';
-    dash.style.display = 'block';
-    logoutLink.style.display = 'inline';
-    await loadReservas();
-  }
-
-  async function loadReservas(){
-    const { data, error } = await supabaseClient
-      .from('reservas')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if(error){
-      alert('No se pudieron cargar las reservas: ' + error.message);
-      return;
-    }
-    allReservas = data || [];
-    renderStats();
-    renderTable();
-  }
-
-  function renderStats(){
-    const total = allReservas.length;
-    const pend = allReservas.filter(r => r.estado === 'pendiente').length;
-    const appr = allReservas.filter(r => r.estado === 'aprobada').length;
-    const rej = allReservas.filter(r => r.estado === 'rechazada').length;
-    document.getElementById('statTotal').textContent = total;
-    document.getElementById('statPend').textContent = pend;
-    document.getElementById('statAppr').textContent = appr;
-    document.getElementById('statRej').textContent = rej;
-  }
-
-  function fmtDate(iso){
-    const d = new Date(iso);
-    return d.toLocaleDateString('es-CO', { day:'2-digit', month:'short', year:'numeric' }) + ' · ' + d.toLocaleTimeString('es-CO', { hour:'2-digit', minute:'2-digit' });
-  }
-
-  function renderTable(){
-    const list = currentFilter === 'todas' ? allReservas : allReservas.filter(r => r.estado === currentFilter);
-    const body = document.getElementById('tableBody');
-    const empty = document.getElementById('emptyState');
-
-    if(list.length === 0){
-      body.innerHTML = '';
-      empty.style.display = 'block';
-      return;
-    }
-    empty.style.display = 'none';
-
-    body.innerHTML = list.map(r => `
-      <tr>
-        <td data-label="Nombre"><strong>${escapeHtml(r.nombre)}</strong></td>
-        <td data-label="Correo">${escapeHtml(r.correo)}</td>
-        <td data-label="Plan">${r.plan ? escapeHtml(r.plan) : '<span style="color:var(--muted)">Sin elegir</span>'}</td>
-        <td data-label="Fecha">${fmtDate(r.created_at)}</td>
-        <td data-label="Estado"><span class="badge ${r.estado}">${capitalize(r.estado)}</span></td>
-        <td data-label="Acciones">
-          <div class="row-actions">
-            ${r.estado !== 'aprobada' ? `<button class="abtn approve" onclick="updateEstado('${r.id}','aprobada')">Aprobar</button>` : ''}
-            ${r.estado !== 'rechazada' ? `<button class="abtn reject" onclick="updateEstado('${r.id}','rechazada')">Rechazar</button>` : ''}
-            ${r.estado !== 'pendiente' ? `<button class="abtn undo" onclick="updateEstado('${r.id}','pendiente')">Deshacer</button>` : ''}
+      <div class="hero-form" id="registro">
+        <p class="label">Participa en el piloto académico y ayúdanos a validar la idea</p>
+        <div class="plan-chip" id="planChip" style="display:none;">
+          Plan elegido: <strong id="planChipText"></strong>
+          <button type="button" class="plan-chip-clear" onclick="clearPlan()">Quitar</button>
+        </div>
+        <form id="signupForm" action="https://formspree.io/f/xnpqdpza" method="POST">
+          <div class="field-row">
+            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+            <input type="email" id="correo" name="email" placeholder="Tu correo" required>
+            <input type="hidden" id="planHidden" name="plan" value="">
+            <button type="submit">Quiero probar CoWork+</button>
           </div>
-        </td>
-      </tr>
-    `).join('');
+        </form>
+        <p class="form-note">Tu solicitud queda <strong>pendiente de validación</strong>. Durante el piloto, el equipo revisará manualmente la necesidad y responderá por correo (Método Mago de Oz).</p>
+        <div class="form-success" id="successBox"><svg class="icon" style="color:var(--teal);margin-right:4px;"><use href="#i-check-circle"/></svg> ¡Listo! Tu solicitud quedó registrada. Te contactaremos para conocer tu necesidad y coordinar la prueba del servicio.</div>
+      </div>
+    </div>
+
+    <div class="mockcard">
+      <div class="mchead"><span>¿Qué necesitas hoy?</span><span class="match">Piloto CoWork+</span></div>
+      <div class="mockrow"><div class="mrow-item"><span class="micon teal"><svg class="icon"><use href="#i-building"/></svg></span>Puesto individual</div><div class="tag green">Por horas</div></div>
+      <div class="mockrow"><div class="mrow-item"><span class="micon navy"><svg class="icon"><use href="#i-users"/></svg></span>Sala de reuniones</div><div class="tag green">Flexible</div></div>
+      <div class="mockrow"><div class="mrow-item"><span class="micon gold"><svg class="icon"><use href="#i-briefcase"/></svg></span>Oficina privada</div><div class="tag orange">Por día</div></div>
+      <div class="mockrow"><div class="mrow-item"><span class="micon teal"><svg class="icon"><use href="#i-cpu"/></svg></span>Conexión profesional</div><div class="tag green">Opcional</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="problem">
+  <div class="wrap">
+    <div><span class="n">01</span><h3>Buscar</h3><p>Evita revisar redes, mensajes y páginas diferentes para encontrar un lugar adecuado.</p></div>
+    <div><span class="n">02</span><h3>Reservar</h3><p>Solicita el tipo de espacio y el tiempo que necesitas desde un solo punto.</p></div>
+    <div><span class="n">03</span><h3>Conectar</h3><p>Si tu proyecto lo requiere, recibe sugerencias de perfiles profesionales complementarios.</p></div>
+  </div>
+</div>
+
+<section id="beneficios">
+  <div class="wrap">
+    <div class="kicker">Beneficios</div>
+    <div class="sec-head">
+      <h2>Todo lo esencial para trabajar con mayor flexibilidad.</h2>
+      <p>CoWork+ concentra la búsqueda, la solicitud de reserva y las conexiones profesionales en una experiencia sencilla.</p>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit"><div class="bicon teal"><svg class="icon"><use href="#i-bolt"/></svg></div><h3>Reserva flexible</h3><p>Elige puestos, salas u oficinas por el tiempo que realmente necesitas: horas, días o un plan mensual.</p></div>
+      <div class="benefit"><div class="bicon navy"><svg class="icon"><use href="#i-building"/></svg></div><h3>Todo en un solo lugar</h3><p>Reduce búsquedas dispersas y centraliza la solicitud de espacio desde una sola plataforma.</p></div>
+      <div class="benefit"><div class="bicon gold"><svg class="icon"><use href="#i-users"/></svg></div><h3>Conexiones profesionales</h3><p>Solicita recomendaciones de perfiles con habilidades o intereses relacionados con tu proyecto.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Conexiones profesionales · Simulación</div>
+    <div class="sec-head"><h2>¿Qué perfil podría complementar tu proyecto?</h2><p>Esta demostración representa una función futura. Durante el MVP, las recomendaciones se realizan manualmente para validar si realmente aportan valor.</p></div>
+    <div class="demo">
+      <div class="demo-grid">
+        <div>
+          <h3>¿Qué necesita tu proyecto hoy?</h3>
+          <p class="d">Elige una necesidad y observa el tipo de perfil que CoWork+ podría sugerir.</p>
+          <div class="chip-row" id="chipRow">
+            <div class="chip" data-need="web">Página web</div>
+            <div class="chip" data-need="marca">Diseño de marca</div>
+            <div class="chip" data-need="marketing">Marketing digital</div>
+            <div class="chip" data-need="finanzas">Asesoría financiera</div>
+          </div>
+        </div>
+        <div class="demo-results" id="demoResults">
+          <div class="result-card"><div class="mrow-item"><span class="micon navy"><svg class="icon"><use href="#i-cpu"/></svg></span><div><div class="who">Elige una necesidad</div><div class="role">Los resultados aparecerán aquí</div></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="como-funciona">
+  <div class="wrap">
+    <div class="kicker">Cómo funciona</div>
+    <div class="sec-head"><h2>Encuentra, solicita y conecta en 3 pasos</h2></div>
+    <div class="steps">
+      <div class="step"><div class="dot">1</div><h3>Elige lo que necesitas</h3><p>Selecciona el tipo de espacio y la modalidad que mejor se adapta a tu jornada.</p></div>
+      <div class="step"><div class="dot">2</div><h3>Solicita tu reserva</h3><p>Déjanos tus datos. Durante el piloto confirmamos manualmente la solicitud y disponibilidad.</p></div>
+      <div class="step"><div class="dot">3</div><h3>Trabaja y conecta</h3><p>Recibe la confirmación y, si lo deseas, una recomendación de perfil profesional relacionado con tu proyecto.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="espacios">
+  <div class="wrap">
+    <div class="kicker">Espacios</div>
+    <div class="sec-head"><h2>Elige el espacio según lo que vas a hacer</h2><p>En el MVP mostramos categorías de espacio para validar cuáles son las más buscadas antes de integrar aliados reales.</p></div>
+    <div class="loc-tabs" id="locTabs">
+      <div class="loc-tab active" data-loc="0">Puesto individual</div>
+      <div class="loc-tab" data-loc="1">Sala de reuniones</div>
+      <div class="loc-tab" data-loc="2">Oficina privada</div>
+    </div>
+    <div class="loc-card" id="locCard"></div>
+  </div>
+</section>
+
+
+<section id="precios">
+  <div class="wrap">
+    <div class="kicker">Precios de validación</div>
+    <div class="sec-head center" style="margin-left:auto;margin-right:auto;text-align:center;"><h2>¿Qué modalidad elegirías?</h2><p>Estos valores son hipótesis de prueba para medir intención de compra; no representan tarifas comerciales definitivas.</p></div>
+    <div class="pricing-grid">
+      <div class="plan" id="plan-hora">
+        <h3>Por hora</h3>
+        <div class="price">$10.000 <small>/ hora</small></div>
+        <ul>
+          <li>Puesto de trabajo compartido</li>
+          <li>Reserva según disponibilidad</li>
+          <li>Sin permanencia</li>
+          <li>Conexión profesional opcional</li>
+        </ul>
+        <button type="button" onclick="choosePlan('Por hora', '$10.000/hora', this)">Me interesa</button>
+      </div>
+      <div class="plan feat" id="plan-dia">
+        <h3>Día flexible</h3>
+        <div class="price">$40.000 <small>/ día</small></div>
+        <ul>
+          <li>Jornada de coworking</li>
+          <li>Internet y zona común</li>
+          <li>Reserva sencilla</li>
+          <li>Conexión profesional opcional</li>
+        </ul>
+        <button type="button" onclick="choosePlan('Día flexible', '$40.000/día', this)">Me interesa</button>
+      </div>
+      <div class="plan" id="plan-mensual">
+        <h3>Plan flexible</h3>
+        <div class="price">$180.000 <small>/ mes</small></div>
+        <ul>
+          <li>40 horas de coworking</li>
+          <li>Uso flexible durante el mes</li>
+          <li>Acceso a comunidad</li>
+          <li>Recomendaciones de perfiles</li>
+        </ul>
+        <button type="button" onclick="choosePlan('Plan flexible', '$180.000/mes', this)">Me interesa</button>
+      </div>
+    </div>
+    <p class="price-note">* Valores definidos únicamente para la validación del MVP. La encuesta permitirá comparar estos montos con la disposición real de pago.</p>
+  </div>
+</section>
+
+
+
+<section id="faq">
+  <div class="wrap">
+    <div class="kicker" style="text-align:center;">Preguntas frecuentes</div>
+    <div class="sec-head center"><h2>Lo que debes saber del piloto</h2></div>
+    <div class="faq" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q">¿CoWork+ ya es un servicio comercial? <span class="plus">+</span></button>
+        <div class="faq-a"><p>No. Es un prototipo académico diseñado para validar el interés de los usuarios antes de desarrollar una plataforma completa.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿La reserva se confirma automáticamente? <span class="plus">+</span></button>
+        <div class="faq-a"><p>No durante el MVP. La solicitud se registra y el equipo la revisa manualmente, aplicando el Método Mago de Oz.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Cómo funcionan las conexiones profesionales? <span class="plus">+</span></button>
+        <div class="faq-a"><p>En esta etapa son recomendaciones manuales basadas en la necesidad indicada por el usuario. La automatización con IA se plantea como una evolución futura.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Los precios son definitivos? <span class="plus">+</span></button>
+        <div class="faq-a"><p>No. Son valores de prueba para medir disposición de pago y ajustar la propuesta según los resultados de la validación.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="proof">
+      <div>
+        <div class="kicker">Validación del MVP</div>
+        <h2 style="font-size:28px;font-weight:600;">Ayúdanos a validar la idea</h2>
+        <p style="margin-top:14px;color:var(--muted);font-size:15px;line-height:1.6;">Comparte este enlace con amigos, familia o tus grupos de WhatsApp e Instagram. Cada registro y cada respuesta nos ayuda a medir si el problema y la propuesta de valor generan interés real.</p>
+        <div class="share-row">
+          <button class="share-btn" onclick="shareTo('whatsapp')"><svg class="icon"><use href="#i-whatsapp"/></svg> WhatsApp</button>
+          <button class="share-btn" onclick="shareTo('instagram')"><svg class="icon"><use href="#i-instagram"/></svg> Instagram</button>
+          <button class="share-btn" onclick="shareTo('mail')"><svg class="icon"><use href="#i-mail"/></svg> Correo</button>
+        </div>
+        <div class="copy-box">
+          <span class="copy-icon"><svg class="icon"><use href="#i-link"/></svg></span>
+          <input type="text" id="shareUrl" value="https://jimmycarlosama-sketch.github.io/COWORK/" readonly>
+          <button onclick="copyLink()" id="copyBtn">Copiar</button>
+        </div>
+      </div>
+      <div class="proof-card">
+        <h3 style="font-size:18px;font-weight:600;margin-bottom:6px;">Cuéntanos qué piensas</h3>
+        <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px;">Las mismas preguntas de validación del piloto — tus respuestas llegan directo a nuestro correo.</p>
+        <form id="feedbackForm" action="https://formspree.io/f/xnpqdpza" method="POST">
+          <input type="hidden" name="_subject" value="Feedback CoWork+">
+          <div class="fb-field">
+            <label>¿Cuánto pagarías por esto?</label>
+            <input type="text" name="pagaria" placeholder="Ej: $150.000/mes" required>
+          </div>
+          <div class="fb-field">
+            <label>¿Cómo resuelves este problema hoy?</label>
+            <input type="text" name="hoy" placeholder="Tu respuesta" required>
+          </div>
+          <div class="fb-field">
+            <label>¿Qué es lo que MÁS te gusta?</label>
+            <input type="text" name="megusta" placeholder="Tu respuesta" required>
+          </div>
+          <div class="fb-field">
+            <label>¿Qué cambiarías?</label>
+            <input type="text" name="cambiaria" placeholder="Tu respuesta" required>
+          </div>
+          <button type="submit" class="fb-submit">Enviar respuestas</button>
+        </form>
+        <div class="form-success" id="feedbackSuccess" style="margin-top:14px;">
+          <svg class="icon" style="color:var(--teal);margin-right:4px;"><use href="#i-check-circle"/></svg> ¡Gracias! Tu feedback quedó registrado.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Mide los resultados</div>
+    <div class="sec-head"><h2>Panel de validación en vivo</h2><p>Usa estos indicadores como guía para consolidar la evidencia obtenida durante la prueba del prototipo.</p></div>
+    <div class="metric-grid">
+      <div class="metric"><div class="value" id="mVisitas">0</div><div class="lbl">Visitas a la página</div></div>
+      <div class="metric"><div class="value" id="mRegistros">0</div><div class="lbl">Registros con email</div></div>
+      <div class="metric"><div class="value" id="mTasa">0%</div><div class="lbl">Tasa de conversión</div></div>
+      <div class="metric"><div class="value">10</div><div class="lbl">Meta mínima de validación</div></div>
+    </div>
+    <p class="metric-note">* Este panel es solo una demo visual mientras pruebas el sitio tú mismo (se resetea al recargar). Las reservas reales, con su estado pendiente/aprobada/rechazada, quedan guardadas en tu base de datos de <strong>Supabase</strong> — entra al <a href="admin.html" style="color:var(--teal-deep);font-weight:600;">panel de administrador</a> para verlas y gestionarlas. El feedback de las 4 preguntas de validación llega a tu correo y panel de <strong>Formspree</strong>. De ahí toman los números para su tabla del MVP (slide 13) y su Análisis de Decisiones (slide 18).</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="final-cta">
+      <h2>Ayúdanos a decidir el siguiente paso de CoWork+</h2>
+      <p>Tu registro y tus comentarios nos permiten decidir si la propuesta debe iterarse, pivotarse o avanzar a una siguiente versión.</p>
+      <div class="field-row">
+        <input type="email" id="correoFinal" placeholder="tu@correo.com">
+        <button onclick="finalSignup()">Quiero participar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>CoWork+ · Prototipo académico de validación · ACA 2026 · No es un servicio comercial todavía. · <a href="admin.html" style="color:inherit;text-decoration:underline;">Panel de administrador</a></footer>
+
+<script>
+  // ---- metrics (in-memory, no localStorage) ----
+  let memory = { visitas: 0, registros: 0 };
+  function renderMetrics(){
+    document.getElementById('mVisitas').textContent = memory.visitas;
+    document.getElementById('mRegistros').textContent = memory.registros;
+    const tasa = memory.visitas > 0 ? Math.round((memory.registros / memory.visitas) * 100) : 0;
+    document.getElementById('mTasa').textContent = tasa + '%';
+  }
+  memory.visitas += 1;
+  renderMetrics();
+
+  // ---- mobile menu ----
+  const navLinks = document.getElementById('navLinks');
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  hamburgerBtn.addEventListener('click', function(){
+    navLinks.classList.toggle('open');
+  });
+  navLinks.addEventListener('click', function(e){
+    if(e.target.tagName === 'A'){
+      navLinks.classList.remove('open');
+    }
+  });
+
+  // ---- plan selection ----
+  let chosenPlan = null;
+  function choosePlan(name, price, btnEl){
+    chosenPlan = { name, price };
+
+    document.querySelectorAll('.plan').forEach(p => p.classList.remove('selected'));
+    document.querySelectorAll('.plan button').forEach(b => {
+      b.classList.remove('chosen');
+      b.textContent = b.textContent.replace('Plan seleccionado ✓', b.dataset.original || b.textContent);
+    });
+    const card = btnEl.closest('.plan');
+    card.classList.add('selected');
+    if(!btnEl.dataset.original) btnEl.dataset.original = btnEl.textContent;
+    btnEl.classList.add('chosen');
+    btnEl.textContent = 'Plan seleccionado ✓';
+
+    const chip = document.getElementById('planChip');
+    document.getElementById('planChipText').textContent = name + ' — ' + price;
+    chip.style.display = 'flex';
+    document.getElementById('planHidden').value = name + ' (' + price + ')';
+
+    document.getElementById('registro').scrollIntoView({behavior:'smooth', block:'center'});
+    document.getElementById('nombre').focus({preventScroll:true});
   }
 
-  async function updateEstado(id, nuevoEstado){
-    const { error } = await supabaseClient.from('reservas').update({ estado: nuevoEstado }).eq('id', id);
-    if(error){
-      alert('No se pudo actualizar: ' + error.message);
+  function clearPlan(){
+    chosenPlan = null;
+    document.querySelectorAll('.plan').forEach(p => p.classList.remove('selected'));
+    document.querySelectorAll('.plan button').forEach(b => {
+      b.classList.remove('chosen');
+      if(b.dataset.original) b.textContent = b.dataset.original;
+    });
+    document.getElementById('planChip').style.display = 'none';
+    document.getElementById('planHidden').value = '';
+  }
+
+  document.getElementById('signupForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const form = this;
+    const btn = form.querySelector('button');
+    const box = document.getElementById('successBox');
+
+    if(!supabaseClient){
+      box.innerHTML = '⚠️ La base de datos todavía no está conectada. Sigue las instrucciones del bloque "BASE DE DATOS REAL" en el código (busca TU_SUPABASE_URL) para que las reservas se guarden de verdad.';
+      box.style.background = 'rgba(200,154,76,0.18)';
+      box.style.borderColor = 'rgba(200,154,76,0.5)';
+      box.style.display = 'block';
+      memory.registros += 1;
+      renderMetrics();
       return;
     }
-    await loadReservas();
-  }
-  window.updateEstado = updateEstado;
 
-  document.getElementById('filterChips').addEventListener('click', function(e){
-    const chip = e.target.closest('.fchip');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    const nombre = document.getElementById('nombre').value.trim();
+    const correo = document.getElementById('correo').value.trim();
+    const plan = document.getElementById('planHidden').value || null;
+
+    const { data: sessionData } = await supabaseClient.auth.getSession();
+    const userId = sessionData.session ? sessionData.session.user.id : null;
+
+    const { error } = await supabaseClient.from('reservas').insert([
+      { nombre, correo, plan, estado: 'pendiente', user_id: userId }
+    ]);
+
+    if(!error){
+      memory.registros += 1;
+      renderMetrics();
+      box.style.background = '';
+      box.style.borderColor = '';
+      box.innerHTML = '<svg class="icon" style="color:var(--teal);margin-right:4px;"><use href="#i-check-circle"/></svg> ¡Listo! Tu solicitud quedó registrada como <strong>pendiente</strong>'
+        + (chosenPlan ? ' con el plan <strong>' + chosenPlan.name + '</strong> (' + chosenPlan.price + ')' : '')
+        + '. El equipo la revisará y te escribirá en 24h.';
+      box.style.display = 'block';
+      btn.textContent = '¡Registrado!';
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Quiero probar CoWork+';
+      alert('Hubo un problema guardando tu reserva: ' + error.message);
+    }
+  });
+
+  // ---- feedback form ----
+  const feedbackForm = document.getElementById('feedbackForm');
+  feedbackForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const form = this;
+    const btn = form.querySelector('.fb-submit');
+    const success = document.getElementById('feedbackSuccess');
+
+    if(form.action.includes('TU_ID_DE_FORMSPREE')){
+      alert('Este formulario todavía no está conectado a Formspree. Sigue el paso 2 de las instrucciones en el código.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(res => {
+      if(res.ok){
+        form.style.display = 'none';
+        success.style.display = 'block';
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Enviar respuestas';
+        alert('Hubo un problema enviando el formulario. Intenta de nuevo.');
+      }
+    }).catch(() => {
+      btn.disabled = false;
+      btn.textContent = 'Enviar respuestas';
+      alert('Hubo un problema de conexión. Intenta de nuevo.');
+    });
+  });
+
+  function finalSignup(){
+    const input = document.getElementById('correoFinal');
+    if(!input.value.includes('@')){ input.focus(); return; }
+    memory.registros += 1;
+    renderMetrics();
+    input.value = '';
+    input.placeholder = '¡Gracias por tu voto!';
+  }
+
+  function copyLink(){
+    const el = document.getElementById('shareUrl');
+    el.select();
+    document.execCommand('copy');
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '¡Copiado!';
+    setTimeout(()=> btn.textContent = 'Copiar', 1500);
+  }
+
+  function shareTo(channel){
+    const text = encodeURIComponent('Estamos validando CoWork+, una propuesta de coworking flexible y colaborativo. ¿Nos ayudas a probarla? https://jimmycarlosama-sketch.github.io/COWORK/');
+    let url = '';
+    if(channel === 'whatsapp') url = 'https://wa.me/?text=' + text;
+    if(channel === 'mail') url = 'mailto:?subject=Ayúdame%20a%20validar%20CoWork%2B&body=' + text;
+    if(channel === 'instagram'){ alert('Copia el enlace y compártelo en tu historia de Instagram.'); return; }
+    window.open(url, '_blank');
+  }
+
+  // ---- matching demo ----
+  const matches = {
+    web: [
+      {who:'Perfil sugerido: Desarrollo web', role:'Landing pages, sitios web y automatización'},
+      {who:'Perfil sugerido: UX/UI', role:'Experiencia de usuario y prototipado'},
+    ],
+    marca: [
+      {who:'Perfil sugerido: Diseño gráfico', role:'Identidad visual y piezas digitales'},
+      {who:'Perfil sugerido: Branding', role:'Estrategia y construcción de marca'},
+    ],
+    marketing: [
+      {who:'Perfil sugerido: Marketing digital', role:'Pauta, estrategia y contenidos'},
+      {who:'Perfil sugerido: Social media', role:'Gestión y crecimiento de redes'},
+    ],
+    finanzas: [
+      {who:'Perfil sugerido: Asesoría financiera', role:'Costos, precios y proyecciones'},
+      {who:'Perfil sugerido: Contabilidad', role:'Organización financiera para emprendimientos'},
+    ],
+  };
+  document.getElementById('chipRow').addEventListener('click', function(e){
+    const chip = e.target.closest('.chip');
     if(!chip) return;
     [...this.children].forEach(c => c.classList.remove('active'));
     chip.classList.add('active');
-    currentFilter = chip.dataset.f;
-    renderTable();
+    const need = chip.dataset.need;
+    const results = matches[need] || [];
+    const box = document.getElementById('demoResults');
+    box.innerHTML = results.map(r => `
+      <div class="result-card">
+        <div><div class="who">${r.who}</div><div class="role">${r.role}</div></div>
+        <div class="tag green">Conectar</div>
+      </div>
+    `).join('');
   });
 
-  document.getElementById('refreshBtn').addEventListener('click', loadReservas);
-
-  function escapeHtml(str){
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+  // ---- tipos de espacio ----
+  const locations = [
+    {name:'Puesto individual', mode:'Hora / día', note:'Una opción práctica para trabajar de forma individual con conexión estable y un puesto adecuado.', detail:'Ideal para freelancers, emprendedores y profesionales remotos.'},
+    {name:'Sala de reuniones', mode:'Por horas', note:'Pensada para reuniones con clientes, sesiones de equipo, presentaciones o trabajo colaborativo.', detail:'Útil para equipos pequeños y encuentros puntuales.'},
+    {name:'Oficina privada', mode:'Día / plan', note:'Mayor privacidad para llamadas, concentración, reuniones o jornadas de trabajo que requieren un espacio reservado.', detail:'Recomendada para profesionales y equipos que necesitan privacidad.'},
+  ];
+  function renderLoc(i){
+    const l = locations[i];
+    document.getElementById('locCard').innerHTML = `
+      <div>
+        <h3>${l.name}</h3>
+        <p>${l.note}</p>
+        <div class="occ-label" style="margin-top:12px;">${l.detail}</div>
+      </div>
+      <div class="avail-badge" style="font-size:16px;">${l.mode}<span>modalidad de prueba</span></div>
+    `;
   }
-  function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+  document.getElementById('locTabs').addEventListener('click', function(e){
+    const tab = e.target.closest('.loc-tab');
+    if(!tab) return;
+    [...this.children].forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    renderLoc(Number(tab.dataset.loc));
+  });
+  renderLoc(0);
 
-  // si ya hay sesión activa (refrescó la página), verifica el rol y entra directo
-  (async function checkSession(){
-    if(!configured) return;
-    const { data } = await supabaseClient.auth.getSession();
-    if(!data.session) return;
-
-    const { data: perfil } = await supabaseClient
-      .from('perfiles')
-      .select('rol')
-      .eq('id', data.session.user.id)
-      .single();
-
-    if(perfil && perfil.rol === 'personal'){
-      showDashboard();
-    } else {
-      await supabaseClient.auth.signOut();
+  // ---- FAQ accordion ----
+  document.getElementById('faqList').addEventListener('click', function(e){
+    const btn = e.target.closest('.faq-q');
+    if(!btn) return;
+    const item = btn.closest('.faq-item');
+    const answer = item.querySelector('.faq-a');
+    const isOpen = item.classList.contains('open');
+    // close all
+    this.querySelectorAll('.faq-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.faq-a').style.maxHeight = null;
+    });
+    if(!isOpen){
+      item.classList.add('open');
+      answer.style.maxHeight = answer.scrollHeight + 'px';
     }
-  })();
+  });
 </script>
 
 </body>
