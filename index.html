@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CoWork+ — Coworking Inteligente</title>
+<title>CoWork+ — Coworking flexible y colaborativo</title>
+<meta name="description" content="CoWork+ es un prototipo académico para encontrar y solicitar espacios de coworking flexibles y facilitar conexiones profesionales desde una sola plataforma.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -363,13 +364,13 @@
     </div>
     <div class="navlinks" id="navLinks">
       <a href="#beneficios">Beneficios</a>
-      <a href="#ubicaciones">Ubicaciones</a>
-      <a href="#marketplace">Marketplace</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#espacios">Espacios</a>
       <a href="#precios">Precios</a>
       <a href="#faq">Preguntas</a>
       <a href="cuenta.html">Mi cuenta</a>
     </div>
-    <a class="cta-small" href="#registro">Reservar mi lugar</a>
+    <a class="cta-small" href="#registro">Probar CoWork+</a>
     <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menú">
       <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
@@ -380,17 +381,17 @@
   <div class="wrap">
     <div>
       <span class="eyebrow">MVP · Prueba de concepto</span>
-      <h1>Tu próximo colaborador está a <em>una reserva</em> de distancia.</h1>
-      <p class="sub">CoWork+ conecta espacios de trabajo flexibles con freelancers, emprendedores y estudiantes — y usa IA para sugerirte con quién trabajar, no solo dónde sentarte.</p>
+      <h1>Trabaja donde tus ideas <em>pueden crecer.</em></h1>
+      <p class="sub">Encuentra y solicita espacios de coworking por horas o días y, si lo necesitas, conecta con profesionales que pueden aportar a tus proyectos.</p>
 
       <div class="hero-stats">
-        <div><div class="n">5</div><div class="l">sedes en Bogotá</div></div>
-        <div><div class="n">120+</div><div class="l">colaboradores activos</div></div>
-        <div><div class="n">92%</div><div class="l">match promedio IA</div></div>
+        <div><div class="n">Flexible</div><div class="l">por horas o días</div></div>
+        <div><div class="n">Simple</div><div class="l">una sola solicitud</div></div>
+        <div><div class="n">Conecta</div><div class="l">con otros profesionales</div></div>
       </div>
 
       <div class="hero-form" id="registro">
-        <p class="label">Sé de los primeros 50 en probarlo — sin costo durante el piloto</p>
+        <p class="label">Participa en el piloto académico y ayúdanos a validar la idea</p>
         <div class="plan-chip" id="planChip" style="display:none;">
           Plan elegido: <strong id="planChipText"></strong>
           <button type="button" class="plan-chip-clear" onclick="clearPlan()">Quitar</button>
@@ -400,29 +401,29 @@
             <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
             <input type="email" id="correo" name="email" placeholder="Tu correo" required>
             <input type="hidden" id="planHidden" name="plan" value="">
-            <button type="submit">Quiero mi lugar</button>
+            <button type="submit">Quiero probar CoWork+</button>
           </div>
         </form>
-        <p class="form-note">Tu reserva queda <strong>pendiente de aprobación</strong> — el equipo la revisa y te escribe en 24h (proceso manual — Método Mago de Oz).</p>
-        <div class="form-success" id="successBox"><svg class="icon" style="color:var(--teal);margin-right:4px;"><use href="#i-check-circle"/></svg> ¡Listo! Tu solicitud quedó registrada como <strong>pendiente</strong>. Te contactaremos por correo en 24h para coordinar tu espacio y presentarte a 2-3 colaboradores afines a tu proyecto.</div>
+        <p class="form-note">Tu solicitud queda <strong>pendiente de validación</strong>. Durante el piloto, el equipo revisará manualmente la necesidad y responderá por correo (Método Mago de Oz).</p>
+        <div class="form-success" id="successBox"><svg class="icon" style="color:var(--teal);margin-right:4px;"><use href="#i-check-circle"/></svg> ¡Listo! Tu solicitud quedó registrada. Te contactaremos para conocer tu necesidad y coordinar la prueba del servicio.</div>
       </div>
     </div>
 
     <div class="mockcard">
-      <div class="mchead"><span>Sugerencias para ti</span><span class="match">IA activa</span></div>
-      <div class="mockrow"><div class="mrow-item"><span class="micon teal"><svg class="icon"><use href="#i-code"/></svg></span>Laura — Desarrolladora Web</div><div class="tag green">92% match</div></div>
-      <div class="mockrow"><div class="mrow-item"><span class="micon navy"><svg class="icon"><use href="#i-palette"/></svg></span>Carlos — Diseñador UX</div><div class="tag green">87% match</div></div>
-      <div class="mockrow"><div class="mrow-item"><span class="micon gold"><svg class="icon"><use href="#i-megaphone"/></svg></span>Andrés — Marketing Digital</div><div class="tag orange">74% match</div></div>
-      <div class="mockrow"><div class="mrow-item"><span class="micon teal"><svg class="icon"><use href="#i-pin"/></svg></span>Puesto disponible — Chapinero</div><div class="tag green">Libre hoy</div></div>
+      <div class="mchead"><span>¿Qué necesitas hoy?</span><span class="match">Piloto CoWork+</span></div>
+      <div class="mockrow"><div class="mrow-item"><span class="micon teal"><svg class="icon"><use href="#i-building"/></svg></span>Puesto individual</div><div class="tag green">Por horas</div></div>
+      <div class="mockrow"><div class="mrow-item"><span class="micon navy"><svg class="icon"><use href="#i-users"/></svg></span>Sala de reuniones</div><div class="tag green">Flexible</div></div>
+      <div class="mockrow"><div class="mrow-item"><span class="micon gold"><svg class="icon"><use href="#i-briefcase"/></svg></span>Oficina privada</div><div class="tag orange">Por día</div></div>
+      <div class="mockrow"><div class="mrow-item"><span class="micon teal"><svg class="icon"><use href="#i-cpu"/></svg></span>Conexión profesional</div><div class="tag green">Opcional</div></div>
     </div>
   </div>
 </section>
 
 <div class="problem">
   <div class="wrap">
-    <div><span class="n">63%</span><h3>De los freelancers</h3><p>trabaja desde casa por falta de un espacio flexible y accesible cerca.</p></div>
-    <div><span class="n">1 de 3</span><h3>Emprendedores</h3><p>dice que su mayor freno es no encontrar al colaborador correcto a tiempo.</p></div>
-    <div><span class="n">+40%</span><h3>Costos evitables</h3><p>pagados de más en coworkings tradicionales por servicios que nunca usan.</p></div>
+    <div><span class="n">01</span><h3>Buscar</h3><p>Evita revisar redes, mensajes y páginas diferentes para encontrar un lugar adecuado.</p></div>
+    <div><span class="n">02</span><h3>Reservar</h3><p>Solicita el tipo de espacio y el tiempo que necesitas desde un solo punto.</p></div>
+    <div><span class="n">03</span><h3>Conectar</h3><p>Si tu proyecto lo requiere, recibe sugerencias de perfiles profesionales complementarios.</p></div>
   </div>
 </div>
 
@@ -430,29 +431,26 @@
   <div class="wrap">
     <div class="kicker">Beneficios</div>
     <div class="sec-head">
-      <h2>No alquilamos escritorios. Conectamos oportunidades.</h2>
-      <p>Todo lo que necesitas para trabajar, sin pagar de más por servicios que no usas.</p>
+      <h2>Todo lo esencial para trabajar con mayor flexibilidad.</h2>
+      <p>CoWork+ concentra la búsqueda, la solicitud de reserva y las conexiones profesionales en una experiencia sencilla.</p>
     </div>
     <div class="benefits-grid">
-      <div class="benefit"><div class="bicon teal"><svg class="icon"><use href="#i-bolt"/></svg></div><h3>Reserva en segundos</h3><p>Puestos y salas por hora, día o mes — sin contratos largos ni letra pequeña.</p></div>
-      <div class="benefit"><div class="bicon navy"><svg class="icon"><use href="#i-cpu"/></svg></div><h3>Colaboradores con IA</h3><p>Nuestro asistente sugiere personas y proyectos compatibles con lo que estás construyendo.</p></div>
-      <div class="benefit"><div class="bicon gold"><svg class="icon"><use href="#i-briefcase"/></svg></div><h3>Servicios entre miembros</h3><p>Contrata diseño, desarrollo o marketing dentro de la misma comunidad, con reseñas reales.</p></div>
-      <div class="benefit"><div class="bicon teal"><svg class="icon"><use href="#i-cap"/></svg></div><h3>Cursos y talleres</h3><p>Aprende marketing digital, IA o comercio electrónico y aplícalo con tu propio equipo.</p></div>
-      <div class="benefit"><div class="bicon navy"><svg class="icon"><use href="#i-building"/></svg></div><h3>Red de sedes</h3><p>Un solo plan, cinco ubicaciones en Bogotá. Trabaja donde te quede mejor cada día.</p></div>
-      <div class="benefit"><div class="bicon gold"><svg class="icon"><use href="#i-users"/></svg></div><h3>Comunidad activa</h3><p>Eventos y networking mensuales para encontrar tu próximo proyecto sin salir del edificio.</p></div>
+      <div class="benefit"><div class="bicon teal"><svg class="icon"><use href="#i-bolt"/></svg></div><h3>Reserva flexible</h3><p>Elige puestos, salas u oficinas por el tiempo que realmente necesitas: horas, días o un plan mensual.</p></div>
+      <div class="benefit"><div class="bicon navy"><svg class="icon"><use href="#i-building"/></svg></div><h3>Todo en un solo lugar</h3><p>Reduce búsquedas dispersas y centraliza la solicitud de espacio desde una sola plataforma.</p></div>
+      <div class="benefit"><div class="bicon gold"><svg class="icon"><use href="#i-users"/></svg></div><h3>Conexiones profesionales</h3><p>Solicita recomendaciones de perfiles con habilidades o intereses relacionados con tu proyecto.</p></div>
     </div>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <div class="kicker">Demo — Asistente de matching</div>
-    <div class="sec-head"><h2>Dinos qué necesitas, te mostramos con quién trabajar</h2></div>
+    <div class="kicker">Conexiones profesionales · Simulación</div>
+    <div class="sec-head"><h2>¿Qué perfil podría complementar tu proyecto?</h2><p>Esta demostración representa una función futura. Durante el MVP, las recomendaciones se realizan manualmente para validar si realmente aportan valor.</p></div>
     <div class="demo">
       <div class="demo-grid">
         <div>
           <h3>¿Qué necesita tu proyecto hoy?</h3>
-          <p class="d">Elige una opción y el asistente simula la recomendación que recibirías dentro de la app.</p>
+          <p class="d">Elige una necesidad y observa el tipo de perfil que CoWork+ podría sugerir.</p>
           <div class="chip-row" id="chipRow">
             <div class="chip" data-need="web">Página web</div>
             <div class="chip" data-need="marca">Diseño de marca</div>
@@ -468,136 +466,97 @@
   </div>
 </section>
 
-<section class="how">
+<section class="how" id="como-funciona">
   <div class="wrap">
     <div class="kicker">Cómo funciona</div>
-    <div class="sec-head"><h2>De la reserva al primer proyecto en 3 pasos</h2></div>
+    <div class="sec-head"><h2>Encuentra, solicita y conecta en 3 pasos</h2></div>
     <div class="steps">
-      <div class="step"><div class="dot">1</div><h3>Te registras</h3><p>Cuéntanos qué haces y qué necesitas: espacio, colaboradores o ambos.</p></div>
-      <div class="step"><div class="dot">2</div><h3>Te ubicamos</h3><p>Te asignamos el coworking más cercano con disponibilidad hoy mismo.</p></div>
-      <div class="step"><div class="dot">3</div><h3>Conectas</h3><p>Te presentamos personas y servicios afines a tu proyecto desde la primera semana.</p></div>
+      <div class="step"><div class="dot">1</div><h3>Elige lo que necesitas</h3><p>Selecciona el tipo de espacio y la modalidad que mejor se adapta a tu jornada.</p></div>
+      <div class="step"><div class="dot">2</div><h3>Solicita tu reserva</h3><p>Déjanos tus datos. Durante el piloto confirmamos manualmente la solicitud y disponibilidad.</p></div>
+      <div class="step"><div class="dot">3</div><h3>Trabaja y conecta</h3><p>Recibe la confirmación y, si lo deseas, una recomendación de perfil profesional relacionado con tu proyecto.</p></div>
     </div>
   </div>
 </section>
 
-<section id="ubicaciones">
+<section id="espacios">
   <div class="wrap">
-    <div class="kicker">Red de sedes · Smart Cities</div>
-    <div class="sec-head"><h2>Un plan, cinco ubicaciones en Bogotá</h2><p>La app te muestra la disponibilidad en tiempo real y te sugiere la sede más conveniente.</p></div>
+    <div class="kicker">Espacios</div>
+    <div class="sec-head"><h2>Elige el espacio según lo que vas a hacer</h2><p>En el MVP mostramos categorías de espacio para validar cuáles son las más buscadas antes de integrar aliados reales.</p></div>
     <div class="loc-tabs" id="locTabs">
-      <div class="loc-tab active" data-loc="0">Chapinero</div>
-      <div class="loc-tab" data-loc="1">Suba</div>
-      <div class="loc-tab" data-loc="2">Usaquén</div>
-      <div class="loc-tab" data-loc="3">Kennedy</div>
-      <div class="loc-tab" data-loc="4">Engativá</div>
+      <div class="loc-tab active" data-loc="0">Puesto individual</div>
+      <div class="loc-tab" data-loc="1">Sala de reuniones</div>
+      <div class="loc-tab" data-loc="2">Oficina privada</div>
     </div>
     <div class="loc-card" id="locCard"></div>
   </div>
 </section>
 
-<section id="marketplace">
-  <div class="wrap">
-    <div class="kicker">Marketplace interno</div>
-    <div class="sec-head"><h2>Contrata talento sin salir de la comunidad</h2><p>Miembros ofreciendo servicios a otros miembros, con reseñas reales.</p></div>
-    <div class="market-grid">
-      <div class="market-card"><div class="market-top"><div class="avatar">C</div><div class="stars"><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><span class="stars-num">4.9</span></div></div><h4>Carlos — Diseño gráfico</h4><div class="role">Identidad de marca, redes sociales</div><div class="market-price">$50.000 / hora</div></div>
-      <div class="market-card"><div class="market-top"><div class="avatar">L</div><div class="stars"><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><span class="stars-num">4.8</span></div></div><h4>Laura — Desarrollo web</h4><div class="role">Landing pages, e-commerce</div><div class="market-price">$70.000 / hora</div></div>
-      <div class="market-card"><div class="market-top"><div class="avatar">A</div><div class="stars"><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:none;color:var(--line)"><use href="#i-star"/></svg><span class="stars-num">4.7</span></div></div><h4>Andrés — Marketing digital</h4><div class="role">Pauta, redes, contenido</div><div class="market-price">$40.000 / hora</div></div>
-    </div>
-  </div>
-</section>
 
 <section id="precios">
   <div class="wrap">
-    <div class="kicker">Precios</div>
-    <div class="sec-head center" style="margin-left:auto;margin-right:auto;text-align:center;"><h2>Un plan para cada etapa de tu proyecto</h2><p>Precios de referencia para validar el modelo — se ajustan según los resultados del piloto.</p></div>
+    <div class="kicker">Precios de validación</div>
+    <div class="sec-head center" style="margin-left:auto;margin-right:auto;text-align:center;"><h2>¿Qué modalidad elegirías?</h2><p>Estos valores son hipótesis de prueba para medir intención de compra; no representan tarifas comerciales definitivas.</p></div>
     <div class="pricing-grid">
-      <div class="plan" id="plan-basico">
-        <h3>Básico</h3>
-        <div class="price">$80.000 <small>/ mes</small></div>
+      <div class="plan" id="plan-hora">
+        <h3>Por hora</h3>
+        <div class="price">$10.000 <small>/ hora</small></div>
         <ul>
-          <li>Acceso a la comunidad</li>
-          <li>App con matching por IA</li>
-          <li>Eventos y networking</li>
-          <li>Marketplace de servicios</li>
+          <li>Puesto de trabajo compartido</li>
+          <li>Reserva según disponibilidad</li>
+          <li>Sin permanencia</li>
+          <li>Conexión profesional opcional</li>
         </ul>
-        <button type="button" onclick="choosePlan('Básico', '$80.000/mes', this)">Elegir Básico</button>
+        <button type="button" onclick="choosePlan('Por hora', '$10.000/hora', this)">Me interesa</button>
       </div>
-      <div class="plan feat" id="plan-profesional">
-        <h3>Profesional</h3>
+      <div class="plan feat" id="plan-dia">
+        <h3>Día flexible</h3>
+        <div class="price">$40.000 <small>/ día</small></div>
+        <ul>
+          <li>Jornada de coworking</li>
+          <li>Internet y zona común</li>
+          <li>Reserva sencilla</li>
+          <li>Conexión profesional opcional</li>
+        </ul>
+        <button type="button" onclick="choosePlan('Día flexible', '$40.000/día', this)">Me interesa</button>
+      </div>
+      <div class="plan" id="plan-mensual">
+        <h3>Plan flexible</h3>
         <div class="price">$180.000 <small>/ mes</small></div>
         <ul>
           <li>40 horas de coworking</li>
-          <li>Salas de reuniones incluidas</li>
-          <li>Acceso a cursos y talleres</li>
-          <li>Herramientas digitales del equipo</li>
+          <li>Uso flexible durante el mes</li>
+          <li>Acceso a comunidad</li>
+          <li>Recomendaciones de perfiles</li>
         </ul>
-        <button type="button" onclick="choosePlan('Profesional', '$180.000/mes', this)">Elegir Profesional</button>
-      </div>
-      <div class="plan" id="plan-premium">
-        <h3>Premium</h3>
-        <div class="price">$300.000 <small>/ mes</small></div>
-        <ul>
-          <li>Acceso ilimitado a las 5 sedes</li>
-          <li>Salas y cursos ilimitados</li>
-          <li>Asistente de IA prioritario</li>
-          <li>Beneficios exclusivos de networking</li>
-        </ul>
-        <button type="button" onclick="choosePlan('Premium', '$300.000/mes', this)">Elegir Premium</button>
+        <button type="button" onclick="choosePlan('Plan flexible', '$180.000/mes', this)">Me interesa</button>
       </div>
     </div>
-    <p class="price-note">* Valores de referencia para estructurar el modelo de negocio — no son precios de mercado definitivos.</p>
+    <p class="price-note">* Valores definidos únicamente para la validación del MVP. La encuesta permitirá comparar estos montos con la disposición real de pago.</p>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <div class="sustain">
-      <div class="top">
-        <h2 style="display:flex;align-items:center;gap:12px;"><svg class="icon" style="color:var(--teal);width:32px;height:32px;flex-shrink:0;"><use href="#i-leaf"/></svg><span>Impacto ambiental de la comunidad</span></h2>
-        <p class="d">Cada sede opera con criterios de sostenibilidad — y la app lo muestra en tiempo real.</p>
-      </div>
-      <div class="sustain-grid">
-        <div class="sustain-metric"><div class="v">350 kg</div><div class="l">de residuos reciclados este mes</div></div>
-        <div class="sustain-metric"><div class="v">1.200 kg</div><div class="l">de CO₂ evitados con energía LED y solar</div></div>
-        <div class="sustain-metric"><div class="v">430</div><div class="l">viajes realizados en bicicleta por miembros</div></div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<section>
-  <div class="wrap">
-    <div class="kicker">Lo que dicen en el piloto</div>
-    <div class="sec-head"><h2>Primeras impresiones de la comunidad</h2></div>
-    <div class="testi-grid">
-      <div class="testi"><div class="stars"><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg></div><p class="q">"En la primera semana ya tenía una diseñadora con quien sacar mi primer prototipo. Eso en un coworking normal no pasa."</p><div class="who"><div class="avatar">M</div><div><h5>Mariana G.</h5><span>Emprendedora, e-commerce</span></div></div></div>
-      <div class="testi"><div class="stars"><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg></div><p class="q">"Me gustó poder reservar solo por un día sin pelear con un contrato de un año. Y las recomendaciones sí se sintieron relevantes."</p><div class="who"><div class="avatar">D</div><div><h5>David R.</h5><span>Freelancer, desarrollo</span></div></div></div>
-      <div class="testi"><div class="stars"><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:var(--gold);color:var(--gold)"><use href="#i-star"/></svg><svg class="icon star-ic" style="fill:none;color:var(--line)"><use href="#i-star"/></svg></div><p class="q">"Los cursos cortos me sirvieron para entender mejor cómo vender en línea. Le pondría más horarios en la noche."</p><div class="who"><div class="avatar">S</div><div><h5>Sara P.</h5><span>Estudiante, últimos semestres</span></div></div></div>
-    </div>
-  </div>
-</section>
 
 <section id="faq">
   <div class="wrap">
     <div class="kicker" style="text-align:center;">Preguntas frecuentes</div>
-    <div class="sec-head center"><h2>Antes de que preguntes</h2></div>
+    <div class="sec-head center"><h2>Lo que debes saber del piloto</h2></div>
     <div class="faq" id="faqList">
       <div class="faq-item">
-        <button class="faq-q">¿Necesito pagar algo para probar el piloto? <span class="plus">+</span></button>
-        <div class="faq-a"><p>No. Los primeros 50 registros acceden gratis durante el periodo de validación, a cambio de darnos feedback honesto.</p></div>
+        <button class="faq-q">¿CoWork+ ya es un servicio comercial? <span class="plus">+</span></button>
+        <div class="faq-a"><p>No. Es un prototipo académico diseñado para validar el interés de los usuarios antes de desarrollar una plataforma completa.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">¿Cómo funciona el matching por IA? <span class="plus">+</span></button>
-        <div class="faq-a"><p>Por ahora el proceso es manual (Método Mago de Oz): el equipo revisa cada perfil y hace las conexiones a mano, simulando lo que hará el algoritmo cuando esté listo.</p></div>
+        <button class="faq-q">¿La reserva se confirma automáticamente? <span class="plus">+</span></button>
+        <div class="faq-a"><p>No durante el MVP. La solicitud se registra y el equipo la revisa manualmente, aplicando el Método Mago de Oz.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">¿Puedo cancelar cuando quiera? <span class="plus">+</span></button>
-        <div class="faq-a"><p>Sí, todos los planes son mensuales y sin permanencia mínima.</p></div>
+        <button class="faq-q">¿Cómo funcionan las conexiones profesionales? <span class="plus">+</span></button>
+        <div class="faq-a"><p>En esta etapa son recomendaciones manuales basadas en la necesidad indicada por el usuario. La automatización con IA se plantea como una evolución futura.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">¿En qué ciudades está disponible? <span class="plus">+</span></button>
-        <div class="faq-a"><p>El piloto arranca en Bogotá con 5 sedes. Si valida bien, el siguiente paso es expandir a otras ciudades.</p></div>
+        <button class="faq-q">¿Los precios son definitivos? <span class="plus">+</span></button>
+        <div class="faq-a"><p>No. Son valores de prueba para medir disposición de pago y ajustar la propuesta según los resultados de la validación.</p></div>
       </div>
     </div>
   </div>
@@ -607,9 +566,9 @@
   <div class="wrap">
     <div class="proof">
       <div>
-        <div class="kicker">Prueba social</div>
+        <div class="kicker">Validación del MVP</div>
         <h2 style="font-size:28px;font-weight:600;">Ayúdanos a validar la idea</h2>
-        <p style="margin-top:14px;color:var(--muted);font-size:15px;line-height:1.6;">Comparte este enlace con amigos, familia o tus grupos de WhatsApp e Instagram. Cada persona que se registre cuenta como validación real del interés en CoWork+.</p>
+        <p style="margin-top:14px;color:var(--muted);font-size:15px;line-height:1.6;">Comparte este enlace con amigos, familia o tus grupos de WhatsApp e Instagram. Cada registro y cada respuesta nos ayuda a medir si el problema y la propuesta de valor generan interés real.</p>
         <div class="share-row">
           <button class="share-btn" onclick="shareTo('whatsapp')"><svg class="icon"><use href="#i-whatsapp"/></svg> WhatsApp</button>
           <button class="share-btn" onclick="shareTo('instagram')"><svg class="icon"><use href="#i-instagram"/></svg> Instagram</button>
@@ -617,7 +576,7 @@
         </div>
         <div class="copy-box">
           <span class="copy-icon"><svg class="icon"><use href="#i-link"/></svg></span>
-          <input type="text" id="shareUrl" value="cowork-plus.co/piloto-bogota" readonly>
+          <input type="text" id="shareUrl" value="https://jimmycarlosama-sketch.github.io/COWORK/" readonly>
           <button onclick="copyLink()" id="copyBtn">Copiar</button>
         </div>
       </div>
@@ -655,7 +614,7 @@
 <section>
   <div class="wrap">
     <div class="kicker">Mide los resultados</div>
-    <div class="sec-head"><h2>Panel de validación en vivo</h2><p>Estos números se actualizan con cada registro real hecho en este prototipo — evidencia directa para tu ACA.</p></div>
+    <div class="sec-head"><h2>Panel de validación en vivo</h2><p>Usa estos indicadores como guía para consolidar la evidencia obtenida durante la prueba del prototipo.</p></div>
     <div class="metric-grid">
       <div class="metric"><div class="value" id="mVisitas">0</div><div class="lbl">Visitas a la página</div></div>
       <div class="metric"><div class="value" id="mRegistros">0</div><div class="lbl">Registros con email</div></div>
@@ -669,17 +628,17 @@
 <section>
   <div class="wrap">
     <div class="final-cta">
-      <h2>¿Vale la pena construir CoWork+?</h2>
-      <p>Cada registro es una respuesta. Ayúdanos a decidir si pivotamos, iteramos o construimos esto de verdad.</p>
+      <h2>Ayúdanos a decidir el siguiente paso de CoWork+</h2>
+      <p>Tu registro y tus comentarios nos permiten decidir si la propuesta debe iterarse, pivotarse o avanzar a una siguiente versión.</p>
       <div class="field-row">
         <input type="email" id="correoFinal" placeholder="tu@correo.com">
-        <button onclick="finalSignup()">Contar mi voto</button>
+        <button onclick="finalSignup()">Quiero participar</button>
       </div>
     </div>
   </div>
 </section>
 
-<footer>Prototipo de validación — CoWork+ · Proyecto académico ACA 2026 · No es un producto real todavía. · <a href="admin.html" style="color:inherit;text-decoration:underline;">Panel de administrador</a></footer>
+<footer>CoWork+ · Prototipo académico de validación · ACA 2026 · No es un servicio comercial todavía. · <a href="admin.html" style="color:inherit;text-decoration:underline;">Panel de administrador</a></footer>
 
 <script>
   // ---- metrics (in-memory, no localStorage) ----
@@ -783,7 +742,7 @@
       btn.textContent = '¡Registrado!';
     } else {
       btn.disabled = false;
-      btn.textContent = 'Quiero mi lugar';
+      btn.textContent = 'Quiero probar CoWork+';
       alert('Hubo un problema guardando tu reserva: ' + error.message);
     }
   });
@@ -842,7 +801,7 @@
   }
 
   function shareTo(channel){
-    const text = encodeURIComponent('Estoy validando una idea de coworking inteligente, ¿me ayudas a darle un vistazo? cowork-plus.co/piloto-bogota');
+    const text = encodeURIComponent('Estamos validando CoWork+, una propuesta de coworking flexible y colaborativo. ¿Nos ayudas a probarla? https://jimmycarlosama-sketch.github.io/COWORK/');
     let url = '';
     if(channel === 'whatsapp') url = 'https://wa.me/?text=' + text;
     if(channel === 'mail') url = 'mailto:?subject=Ayúdame%20a%20validar%20CoWork%2B&body=' + text;
@@ -853,20 +812,20 @@
   // ---- matching demo ----
   const matches = {
     web: [
-      {who:'Laura — Desarrolladora Web', role:'92% match · disponible hoy'},
-      {who:'Pedro — Backend & APIs', role:'81% match · Chapinero'},
+      {who:'Perfil sugerido: Desarrollo web', role:'Landing pages, sitios web y automatización'},
+      {who:'Perfil sugerido: UX/UI', role:'Experiencia de usuario y prototipado'},
     ],
     marca: [
-      {who:'Carlos — Diseño gráfico', role:'89% match · disponible hoy'},
-      {who:'Valentina — Branding', role:'76% match · Usaquén'},
+      {who:'Perfil sugerido: Diseño gráfico', role:'Identidad visual y piezas digitales'},
+      {who:'Perfil sugerido: Branding', role:'Estrategia y construcción de marca'},
     ],
     marketing: [
-      {who:'Andrés — Marketing digital', role:'85% match · disponible hoy'},
-      {who:'Camila — Redes sociales', role:'79% match · Suba'},
+      {who:'Perfil sugerido: Marketing digital', role:'Pauta, estrategia y contenidos'},
+      {who:'Perfil sugerido: Social media', role:'Gestión y crecimiento de redes'},
     ],
     finanzas: [
-      {who:'Julián — Asesor financiero', role:'88% match · Kennedy'},
-      {who:'Natalia — Contabilidad para startups', role:'72% match · Engativá'},
+      {who:'Perfil sugerido: Asesoría financiera', role:'Costos, precios y proyecciones'},
+      {who:'Perfil sugerido: Contabilidad', role:'Organización financiera para emprendimientos'},
     ],
   };
   document.getElementById('chipRow').addEventListener('click', function(e){
@@ -885,24 +844,21 @@
     `).join('');
   });
 
-  // ---- locations ----
+  // ---- tipos de espacio ----
   const locations = [
-    {name:'Chapinero', occ:95, avail:2, note:'Alta demanda — casi lleno hoy'},
-    {name:'Suba', occ:60, avail:14, note:'Buena disponibilidad todo el día'},
-    {name:'Usaquén', occ:40, avail:22, note:'Ideal para reservar sala grupal'},
-    {name:'Kennedy', occ:52, avail:18, note:'Cerca de universidades del sector'},
-    {name:'Engativá', occ:33, avail:26, note:'La sede con más cupos disponibles'},
+    {name:'Puesto individual', mode:'Hora / día', note:'Una opción práctica para trabajar de forma individual con conexión estable y un puesto adecuado.', detail:'Ideal para freelancers, emprendedores y profesionales remotos.'},
+    {name:'Sala de reuniones', mode:'Por horas', note:'Pensada para reuniones con clientes, sesiones de equipo, presentaciones o trabajo colaborativo.', detail:'Útil para equipos pequeños y encuentros puntuales.'},
+    {name:'Oficina privada', mode:'Día / plan', note:'Mayor privacidad para llamadas, concentración, reuniones o jornadas de trabajo que requieren un espacio reservado.', detail:'Recomendada para profesionales y equipos que necesitan privacidad.'},
   ];
   function renderLoc(i){
     const l = locations[i];
     document.getElementById('locCard').innerHTML = `
       <div>
-        <h3>Sede ${l.name}</h3>
+        <h3>${l.name}</h3>
         <p>${l.note}</p>
-        <div class="occ-bar"><div class="occ-fill" style="width:${l.occ}%"></div></div>
-        <div class="occ-label">${l.occ}% de ocupación en este momento</div>
+        <div class="occ-label" style="margin-top:12px;">${l.detail}</div>
       </div>
-      <div class="avail-badge">${l.avail}<span>puestos libres</span></div>
+      <div class="avail-badge" style="font-size:16px;">${l.mode}<span>modalidad de prueba</span></div>
     `;
   }
   document.getElementById('locTabs').addEventListener('click', function(e){
