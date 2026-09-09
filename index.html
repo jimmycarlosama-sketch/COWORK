@@ -435,8 +435,8 @@ footer h4{font-family:'Manrope';font-size:13px;color:white;margin:0 0 10px}
       <div class="stats-head">
         <div>
           <span class="eyebrow">Estadísticas CoWork+</span>
-          <h2>Estadísticas de visitas</h2>
-          <p>Consulta la actividad acumulada de la página principal de CoWork+.</p>
+          <h2>Estadísticas de visitantes</h2>
+          <p>Cada navegador se contabiliza una sola vez. Recargar con F5 no aumenta el contador.</p>
         </div>
         <div class="stats-actions">
           <button type="button" class="stats-refresh" id="statsRefresh">Actualizar datos</button>
@@ -445,20 +445,20 @@ footer h4{font-family:'Manrope';font-size:13px;color:white;margin:0 0 10px}
 
       <div class="stats-grid">
         <div class="stat-card">
-          <span>Vistas totales</span>
+          <span>Visitantes únicos</span>
           <strong id="statTotal">—</strong>
         </div>
         <div class="stat-card">
-          <span>Visitantes / sesiones</span>
-          <strong id="statUnique">—</strong>
-        </div>
-        <div class="stat-card">
-          <span>Vistas de hoy</span>
+          <span>Nuevos hoy</span>
           <strong id="statToday">—</strong>
         </div>
         <div class="stat-card">
           <span>Últimos 7 días</span>
           <strong id="statWeek">—</strong>
+        </div>
+        <div class="stat-card">
+          <span>Opiniones recibidas</span>
+          <strong id="statUnique">—</strong>
         </div>
       </div>
 
@@ -556,30 +556,35 @@ try{
 }catch(e){ console.error('No se pudo iniciar la conexión:',e); }
 
 
-// --- Analítica de visitas ---
-// Cada carga real de la página genera una fila en `visitas`.
-// `session_id` se conserva mientras la pestaña permanezca abierta, de modo que
-// en Supabase puedes calcular tanto vistas totales como sesiones únicas.
-function getCoworkSessionId(){
-  let sessionId = sessionStorage.getItem('cowork_session_id');
-  if(!sessionId){
-    sessionId = (window.crypto && crypto.randomUUID)
+// --- Analítica de visitantes únicos ---
+// Un navegador conserva el mismo identificador en localStorage.
+// Además, Supabase tiene una restricción única (pagina + session_id),
+// por lo que incluso si el JavaScript intentara registrar dos veces,
+// la base de datos no permite duplicar al mismo visitante.
+function getCoworkVisitorId(){
+  const key = 'cowork_visitor_id_v3';
+  let visitorId = localStorage.getItem(key);
+
+  if(!visitorId){
+    visitorId = (window.crypto && crypto.randomUUID)
       ? crypto.randomUUID()
-      : 's_' + Date.now() + '_' + Math.random().toString(36).slice(2);
-    sessionStorage.setItem('cowork_session_id', sessionId);
+      : 'v_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+
+    localStorage.setItem(key, visitorId);
   }
-  return sessionId;
+
+  return visitorId;
 }
 
 async function registerVisit(attempt = 0){
   if(!supabaseClient){
-    console.warn('[CoWork+ visitas] Supabase no está disponible.');
+    console.warn('[CoWork+ visitantes] Supabase no está disponible.');
     return false;
   }
 
   try{
     const payload = {
-      session_id: getCoworkSessionId(),
+      session_id: getCoworkVisitorId(),
       pagina: 'landing',
       referrer: document.referrer || null,
       user_agent: navigator.userAgent || null
@@ -587,22 +592,23 @@ async function registerVisit(attempt = 0){
 
     const {error} = await supabaseClient
       .from('visitas')
-      .insert(payload);
+      .upsert(payload, {
+        onConflict: 'pagina,session_id',
+        ignoreDuplicates: true
+      });
 
     if(error) throw error;
 
-    console.info('[CoWork+ visitas] Vista registrada correctamente.');
+    console.info('[CoWork+ visitantes] Visitante verificado.');
     return true;
   }catch(err){
-    console.warn('[CoWork+ visitas] No se pudo registrar la vista:', {
+    console.warn('[CoWork+ visitantes] No se pudo registrar/verificar el visitante:', {
       message: err?.message || String(err),
       code: err?.code || null,
       details: err?.details || null,
       hint: err?.hint || null
     });
 
-    // Un reintento breve cubre fallos transitorios de red/CDN sin duplicar
-    // continuamente la solicitud.
     if(attempt < 1){
       setTimeout(() => registerVisit(attempt + 1), 1200);
     }
@@ -610,10 +616,18 @@ async function registerVisit(attempt = 0){
   }
 }
 
+async function initVisitorCounter(){
+  await registerVisit();
+  // Refresca los indicadores después de comprobar el visitante.
+  if(typeof loadVisitStats === 'function'){
+    setTimeout(loadVisitStats, 250);
+  }
+}
+
 if(document.readyState === 'loading'){
-  document.addEventListener('DOMContentLoaded', () => registerVisit(), {once:true});
+  document.addEventListener('DOMContentLoaded', initVisitorCounter, {once:true});
 }else{
-  registerVisit();
+  initVisitorCounter();
 }
 
 
@@ -645,10 +659,10 @@ async function loadVisitStats(){
     const row = Array.isArray(data) ? data[0] : data;
     if(!row) throw new Error('Supabase no devolvió datos de estadísticas.');
 
-    statTotal.textContent = formatStat(row.total_vistas);
-    statUnique.textContent = formatStat(row.visitantes_unicos);
+    statTotal.textContent = formatStat(row.visitantes_unicos);
     statToday.textContent = formatStat(row.vistas_hoy);
     statWeek.textContent = formatStat(row.vistas_7_dias);
+    statUnique.textContent = formatStat(row.opiniones_recibidas);
 
     statsStatus.textContent = 'Datos cargados correctamente.';
     statsUpdated.textContent = 'Actualizado: ' + new Date().toLocaleString('es-CO', {
